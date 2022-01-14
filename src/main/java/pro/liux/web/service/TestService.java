@@ -1,4 +1,4 @@
-package pro.legend.web.service;
+package pro.liux.web.service;
 
 public interface TestService {
 

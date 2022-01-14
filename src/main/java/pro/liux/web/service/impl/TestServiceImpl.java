@@ -1,7 +1,7 @@
-package pro.legend.web.service.impl;
+package pro.liux.web.service.impl;
 
 import org.springframework.stereotype.Service;
-import pro.legend.web.service.TestService;
+import pro.liux.web.service.TestService;
 
 
 @Service
