@@ -1,0 +1,1 @@
+mvn clean && mvn -Pnative -DskipTests package
