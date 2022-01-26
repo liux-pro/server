@@ -1,6 +1,5 @@
 package pro.liux.web.config;
 
-import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.cloud.openfeign.FeignClientsConfiguration;
 import org.springframework.context.annotation.Configuration;
@@ -30,6 +29,5 @@ import pro.liux.web.client.DateTestClient;
                 @JdkProxyHint(types = {RequestParam.class, SynthesizedAnnotation.class})
         }
 )
-@EnableFeignClients(clients = {DateTestClient.class})
 public class SpringNativeFeignConfiguration {
 }

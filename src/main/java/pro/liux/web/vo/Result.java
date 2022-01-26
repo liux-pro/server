@@ -2,11 +2,6 @@ package pro.liux.web.vo;
 
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.context.annotation.Bean;
-import org.springframework.nativex.hint.NativeHint;
-import org.springframework.nativex.hint.TypeHint;
-
-import java.util.Map;
 
 @Data
 @Builder
@@ -15,12 +10,17 @@ public class Result {
     private String msg;
     private Object data;
 
-    public static Result success() {
-        return Result.builder().code(200).build();
+    public static Result success(Object data) {
+        return Result.builder().code(0).data(data).build();
     }
 
     public static Result fail(int code) {
         return Result.builder().code(code).build();
     }
+
+    public static Result badRequest() {
+        return Result.builder().code(400).build();
+    }
+
 
 }
