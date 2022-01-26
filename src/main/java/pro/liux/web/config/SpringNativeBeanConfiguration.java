@@ -7,5 +7,5 @@ import pro.liux.web.vo.VditorImage;
 
 @Configuration
 @TypeHint(types = VditorImage.class)
-public class SpringNativeBeanConfig {
+public class SpringNativeBeanConfiguration {
 }

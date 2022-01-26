@@ -58,7 +58,7 @@
                             </execution>
                         </executions>
                         <configuration>
-                            <!-- ... -->
+                            <buildArgs>--enable-https</buildArgs>
                         </configuration>
                     </plugin>
                     <!-- Avoid a clash between Spring Boot repackaging and native-maven-plugin -->
@@ -108,6 +108,7 @@
             </exclusions>
         </dependency>
         <dependency>
+<!--            spring-native 缩小体积-->
             <groupId>org.apache.tomcat.experimental</groupId>
             <artifactId>tomcat-embed-programmatic</artifactId>
             <version>${tomcat.version}</version>

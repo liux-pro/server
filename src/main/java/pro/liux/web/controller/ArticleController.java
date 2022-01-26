@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import pro.liux.web.client.DateTestClient;
 import pro.liux.web.service.TestService;
 import pro.liux.web.vo.Result;
 import pro.liux.web.vo.VditorImage;
@@ -15,13 +16,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
-import java.util.HashMap;
 
 @RestController
 @CrossOrigin
 public class ArticleController {
     @Autowired
     TestService testService;
+
+    @Autowired
+    DateTestClient dateTestClient;
 
 
     @PostMapping("markdown")
@@ -53,5 +56,11 @@ public class ArticleController {
         Result result = Result.success();
         result.setData(vditorImage);
         return result;
+    }
+
+    @PostMapping("aaa")
+    public Object aaa() {
+        Object post = dateTestClient.getPost();
+        return post;
     }
 }
