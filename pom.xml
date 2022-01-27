@@ -91,6 +91,40 @@
                 </plugins>
             </build>
         </profile>
+        <profile>
+<!--            spring native 仍然是体验版，中央仓库没有，spring自己的仓库里有-->
+<!--            华为的仓库聚合了center和spring-->
+            <id>huawei-repo</id>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>huaweicloud</id>
+                    <url>https://repo.huaweicloud.com/repository/maven/</url>
+                </pluginRepository>
+            </pluginRepositories>
+            <repositories>
+                <repository>
+                    <id>huaweicloud</id>
+                    <url>https://repo.huaweicloud.com/repository/maven/</url>
+                </repository>
+            </repositories>
+        </profile>
+        <profile>
+            <id>spring-repo</id>
+            <repositories>
+                <repository>
+                    <id>spring-release</id>
+                    <name>Spring release</name>
+                    <url>https://repo.spring.io/release</url>
+                </repository>
+            </repositories>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>spring-release</id>
+                    <name>Spring release</name>
+                    <url>https://repo.spring.io/release</url>
+                </pluginRepository>
+            </pluginRepositories>
+        </profile>
     </profiles>
     <dependencies>
         <dependency>
