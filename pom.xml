@@ -58,7 +58,7 @@
                             </execution>
                         </executions>
                         <configuration>
-                            <buildArgs>--enable-https</buildArgs>
+                            <buildArgs>--enable-https --enable-url-protocols=http</buildArgs>
                         </configuration>
                     </plugin>
                     <!-- Avoid a clash between Spring Boot repackaging and native-maven-plugin -->

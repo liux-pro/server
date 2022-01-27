@@ -1,5 +1,6 @@
 package pro.liux.web.config;
 
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.cloud.openfeign.FeignClientsConfiguration;
 import org.springframework.context.annotation.Configuration;
@@ -17,18 +18,21 @@ import pro.liux.web.client.S3Client;
 @Configuration
 @NativeHint(trigger = SpringNativeFeignConfiguration.class,
         types = {
-                @TypeHint(types = {DateTestClient.class, S3Client.class}),
+                @TypeHint(types = S3Client.class),
+                @TypeHint(types = DateTestClient.class),
                 @TypeHint(types = FeignClient.class),
                 @TypeHint(typeNames = "org.springframework.cloud.openfeign.FeignClientSpecification"),
                 @TypeHint(types = FeignClientsConfiguration.class)
         },
         jdkProxies = {
-                @JdkProxyHint(types = {DateTestClient.class, S3Client.class}),
+                @JdkProxyHint(types = S3Client.class),
+                @JdkProxyHint(types = DateTestClient.class),
                 @JdkProxyHint(types = {PathVariable.class, SynthesizedAnnotation.class}),
                 @JdkProxyHint(types = {RequestHeader.class, SynthesizedAnnotation.class}),
                 @JdkProxyHint(types = {RequestBody.class, SynthesizedAnnotation.class}),
                 @JdkProxyHint(types = {RequestParam.class, SynthesizedAnnotation.class})
         }
 )
+@EnableFeignClients(clients = {S3Client.class, DateTestClient.class})
 public class SpringNativeFeignConfiguration {
 }
