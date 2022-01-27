@@ -1,21 +1,24 @@
 package pro.liux.web;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.io.File;
-import java.util.List;
+import pro.liux.web.client.S3Client;
 
 @SpringBootTest
 class WebApplicationTests {
 
+    @Autowired
+    S3Client s3Client;
     @Test
     void contextLoads() {
 
     }
 
-    private static List<File> getMD() {
-        return null;
+    @Test
+    public void s3test(){
+        Object info = s3Client.info();
+        System.out.println(info);
     }
 
 }

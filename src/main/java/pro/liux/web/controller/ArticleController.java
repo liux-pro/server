@@ -5,6 +5,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pro.liux.web.client.DateTestClient;
+import pro.liux.web.client.S3Client;
 import pro.liux.web.service.TestService;
 import pro.liux.web.vo.Result;
 import pro.liux.web.vo.VditorImage;
@@ -25,6 +26,9 @@ public class ArticleController {
 
     @Autowired
     DateTestClient dateTestClient;
+
+    @Autowired
+    S3Client s3Client;
 
 
     @PostMapping("markdown")
@@ -61,6 +65,11 @@ public class ArticleController {
     @PostMapping("aaa")
     public Object aaa() {
         Object post = dateTestClient.getPost();
+        return post;
+    }
+    @PostMapping("bbb")
+    public Object bbb() {
+        Map post = s3Client.info();
         return post;
     }
 

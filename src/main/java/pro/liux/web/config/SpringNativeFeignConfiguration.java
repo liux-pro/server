@@ -12,17 +12,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import pro.liux.web.client.DateTestClient;
+import pro.liux.web.client.S3Client;
 
 @Configuration
 @NativeHint(trigger = SpringNativeFeignConfiguration.class,
         types = {
-                @TypeHint(types = DateTestClient.class),
+                @TypeHint(types = {DateTestClient.class, S3Client.class}),
                 @TypeHint(types = FeignClient.class),
                 @TypeHint(typeNames = "org.springframework.cloud.openfeign.FeignClientSpecification"),
                 @TypeHint(types = FeignClientsConfiguration.class)
         },
         jdkProxies = {
-                @JdkProxyHint(types = DateTestClient.class),
+                @JdkProxyHint(types = {DateTestClient.class, S3Client.class}),
                 @JdkProxyHint(types = {PathVariable.class, SynthesizedAnnotation.class}),
                 @JdkProxyHint(types = {RequestHeader.class, SynthesizedAnnotation.class}),
                 @JdkProxyHint(types = {RequestBody.class, SynthesizedAnnotation.class}),
