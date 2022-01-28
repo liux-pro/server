@@ -2,6 +2,7 @@ package pro.liux.web.client;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import pro.liux.web.utils.AWSSignatureVersion4;
 
 import java.util.Map;
@@ -10,4 +11,8 @@ import java.util.Map;
 public interface S3Client {
     @GetMapping("/")
     Map info();
+    @GetMapping("/test")
+    Map list();
+    @PutMapping("/test/234.png")
+    Map put(byte[] bytes);
 }

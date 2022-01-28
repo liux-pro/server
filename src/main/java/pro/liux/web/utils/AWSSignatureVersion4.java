@@ -83,6 +83,13 @@ public class AWSSignatureVersion4 implements RequestInterceptor {
 
         // CanonicalHeaders + '\n' +
         canonicalRequest.append("host:").append(host).append('\n');
+        byte[] data = input.body();
+
+        if (data != null) {
+            canonicalRequest.append("x-amz-content-sha256:").append(host).append('\n');
+        } else {
+            canonicalRequest.append("x-amz-content-sha256:").append(EMPTY_STRING_HASH).append('\n');
+        }
 
 
         // x-amz-date + '\n' +
@@ -91,10 +98,8 @@ public class AWSSignatureVersion4 implements RequestInterceptor {
         canonicalRequest.append('\n');
         canonicalRequest.append(signedHeaders).append('\n');
         // HexEncode(Hash(Payload))
-        byte[] data = input.body();
-        String bodyText = (data != null) ? new String(data, input.requestCharset()) : null;
-        if (bodyText != null) {
-            canonicalRequest.append(hex(sha256(bodyText)));
+        if (data != null) {
+            canonicalRequest.append(hex(sha256(data)));
         } else {
             canonicalRequest.append(EMPTY_STRING_HASH);
         }
@@ -131,16 +136,24 @@ public class AWSSignatureVersion4 implements RequestInterceptor {
             throw new RuntimeException(e);
         }
     }
+    static byte[] sha256(byte[] data) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            return digest.digest(data);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @Override
     @SneakyThrows
     public void apply(RequestTemplate input) {
-        if (!input.headers().isEmpty()) {
-            throw new UnsupportedOperationException("headers not supported");
-        }
-        if (input.body() != null) {
-            throw new UnsupportedOperationException("body not supported");
-        }
+//        if (!input.headers().isEmpty()) {
+//            throw new UnsupportedOperationException("headers not supported");
+//        }
+//        if (input.body() != null) {
+//            throw new UnsupportedOperationException("body not supported");
+//        }
         Target<?> target = input.feignTarget();
 
         URL url = new URL(target.url());
@@ -155,10 +168,16 @@ public class AWSSignatureVersion4 implements RequestInterceptor {
         String credentialScope =
                 String.format("%s/%s/%s/%s", timestamp.substring(0, 8), region, service, "aws4_request");
 
-        String signedHeaders = "host;x-amz-date";
+        String signedHeaders = "host;x-amz-content-sha256;x-amz-date";
 //    input.header("X-Amz-Algorithm", "AWS4-HMAC-SHA256");
 //    input.header("X-Amz-Credential", accessKey + "/" + credentialScope);
 //    input.header("X-Amz-SignedHeaders", "host");
+        byte[] data = input.body();
+        if (data != null) {
+            input.header("x-amz-content-sha256", hex(sha256(data)));
+        } else {
+            input.header("x-amz-content-sha256", EMPTY_STRING_HASH);
+        }
         input.header("Host", host);
         input.header("x-amz-date", timestamp);
 

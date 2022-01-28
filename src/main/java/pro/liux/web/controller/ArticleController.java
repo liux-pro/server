@@ -1,6 +1,9 @@
 package pro.liux.web.controller;
 
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -11,6 +14,7 @@ import pro.liux.web.vo.Result;
 import pro.liux.web.vo.VditorImage;
 import pro.liux.web.vo.VditorImageConvert;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -67,9 +71,10 @@ public class ArticleController {
         Object post = dateTestClient.getPost();
         return post;
     }
+
     @PostMapping("bbb")
     public Object bbb() {
-        Map post = s3Client.info();
+        Map post = s3Client.list();
         return post;
     }
 
@@ -85,5 +90,23 @@ public class ArticleController {
             return Result.success(convert);
         }
         return Result.badRequest();
+    }
+
+
+    @RequestMapping(path = "/up", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_OCTET_STREAM_VALUE})
+    @ResponseStatus(HttpStatus.CREATED)
+    @SneakyThrows
+    void storeAsset(HttpServletRequest request) {
+        InputStream body = request.getInputStream();
+        FileOutputStream fos = new FileOutputStream("aaa.jpg");
+        byte[] b = new byte[1024];
+        int count;
+        while ((count = body.read(b)) != -1) {
+            fos.write(b,0,count);// 写入数据
+        }
+        body.close();
+        fos.close();// 保存数据
+        s3Client.put(b);
+//        Files.copy(body, Paths.get("123.png"));
     }
 }
