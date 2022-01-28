@@ -2,6 +2,10 @@ FROM registry.cn-beijing.aliyuncs.com/liux-pro/base-image:java as builder
 
 WORKDIR /app
 
+COPY pom.xml .
+
+RUN . "$HOME/.sdkman/bin/sdkman-init.sh" && mvn -Pnative -Phuawei-repo dependency:resolve
+
 COPY . .
 
 RUN . "$HOME/.sdkman/bin/sdkman-init.sh" && mvn -Pnative -Phuawei-repo -DskipTests package
