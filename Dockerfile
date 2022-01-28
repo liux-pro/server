@@ -4,11 +4,11 @@ WORKDIR /app
 
 COPY pom.xml .
 
-RUN . "$HOME/.sdkman/bin/sdkman-init.sh" && mvn -Phuawei-repo dependency:go-offline
+RUN . "$HOME/.sdkman/bin/sdkman-init.sh" && mvn -Pnative -Pspring-repo dependency:go-offline
 
 COPY . .
 
-RUN . "$HOME/.sdkman/bin/sdkman-init.sh" && mvn -Pnative -Phuawei-repo -DskipTests clean package
+RUN . "$HOME/.sdkman/bin/sdkman-init.sh" && mvn -Pnative -Pspring-repo -DskipTests clean package
 
 FROM registry.cn-beijing.aliyuncs.com/liux-pro/ubuntu:20.04
 
