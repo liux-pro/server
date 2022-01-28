@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN . "$HOME/.sdkman/bin/sdkman-init.sh" && mvn -Pnative -Pspring-repo -DskipTests package
+RUN . "$HOME/.sdkman/bin/sdkman-init.sh" && mvn -Pnative -Phuawei-repo -DskipTests package
 
 FROM registry.cn-beijing.aliyuncs.com/liux-pro/ubuntu:20.04
 
