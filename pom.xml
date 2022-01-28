@@ -97,13 +97,13 @@
             <id>huawei-repo</id>
             <pluginRepositories>
                 <pluginRepository>
-                    <id>huaweicloud</id>
+                    <id>central</id>
                     <url>https://repo.huaweicloud.com/repository/maven/</url>
                 </pluginRepository>
             </pluginRepositories>
             <repositories>
                 <repository>
-                    <id>huaweicloud</id>
+                    <id>central</id>
                     <url>https://repo.huaweicloud.com/repository/maven/</url>
                 </repository>
             </repositories>
