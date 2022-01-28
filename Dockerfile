@@ -1,4 +1,4 @@
-FROM registry.cn-beijing.aliyuncs.com/liux-pro/base-image:java as builder
+FROM registry.cn-beijing.aliyuncs.com/liux-pro/base-image:java@sha256:48bbb33c1c294d2b26814da3bddd0b75a3bdf0e5165a73eec5e3aad4b82195db as builder
 
 
 
