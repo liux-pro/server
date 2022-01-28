@@ -15,10 +15,7 @@ import pro.liux.web.vo.VditorImage;
 import pro.liux.web.vo.VditorImageConvert;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Collections;
 import java.util.Map;
 
@@ -93,20 +90,19 @@ public class ArticleController {
     }
 
 
-    @RequestMapping(path = "/up", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_OCTET_STREAM_VALUE})
+    @RequestMapping(path = "s3/upload/{filename}", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_OCTET_STREAM_VALUE})
     @ResponseStatus(HttpStatus.CREATED)
     @SneakyThrows
-    void storeAsset(HttpServletRequest request) {
+    Object storeAsset(@PathVariable("filename") String filename,HttpServletRequest request) {
         InputStream body = request.getInputStream();
-        FileOutputStream fos = new FileOutputStream("aaa.jpg");
-        byte[] b = new byte[1024];
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+        byte[] b = new byte[10240];
         int count;
         while ((count = body.read(b)) != -1) {
-            fos.write(b,0,count);// 写入数据
+            outStream.write(b,0,count);// 写入数据
         }
         body.close();
-        fos.close();// 保存数据
-        s3Client.put(b);
-//        Files.copy(body, Paths.get("123.png"));
+        outStream.close();
+        return s3Client.put(filename,outStream.toByteArray());
     }
 }

@@ -19,6 +19,7 @@ import feign.Target;
 import lombok.SneakyThrows;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
+import org.springframework.util.comparator.Comparators;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -27,7 +28,9 @@ import java.net.URL;
 import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 import java.util.TimeZone;
+import java.util.stream.Collectors;
 
 import static feign.Util.UTF_8;
 
@@ -66,14 +69,14 @@ public class AWSSignatureVersion4 implements RequestInterceptor {
         }
     }
 
-    private static String canonicalString(RequestTemplate input, String host,String timestamp,String signedHeaders) {
+    private static String canonicalString(RequestTemplate input, String signedHeaders, String hash) {
         StringBuilder canonicalRequest = new StringBuilder();
-        // HTTPRequestMethod + '\n' +
+        // 请求方式（GET POST） + '\n' +
         canonicalRequest.append(input.method()).append('\n');
-
+        // 域名后面的部分，不算get参数，以/开头
         // CanonicalURI + '\n' +
         canonicalRequest.append(URI.create(input.url()).getPath()).append('\n');
-
+        //
         // CanonicalQueryString + '\n' +
         if (StringUtils.hasText(input.queryLine())) {
             //去除问号
@@ -81,28 +84,28 @@ public class AWSSignatureVersion4 implements RequestInterceptor {
         }
         canonicalRequest.append('\n');
 
+
+
+
+        //所有header
+        String canonicalHeaders = input.headers().entrySet().stream()
+                //key转成小写
+                .collect(Collectors.toMap(key -> key.getKey().toLowerCase()
+                        , Map.Entry::getValue)).entrySet().stream()
+                //以key排序
+                .sorted(Map.Entry.comparingByKey())
+                //拼接 key:value1,value2\n
+                .map(entry -> String.join(":", entry.getKey(), String.join(",", entry.getValue())))
+                //拼接的最后一个也有\n结尾
+                .collect(Collectors.joining("\n", "", "\n"));
         // CanonicalHeaders + '\n' +
-        canonicalRequest.append("host:").append(host).append('\n');
-        byte[] data = input.body();
-
-        if (data != null) {
-            canonicalRequest.append("x-amz-content-sha256:").append(host).append('\n');
-        } else {
-            canonicalRequest.append("x-amz-content-sha256:").append(EMPTY_STRING_HASH).append('\n');
-        }
+        canonicalRequest.append(canonicalHeaders).append('\n');
 
 
-        // x-amz-date + '\n' +
-        canonicalRequest.append("x-amz-date:").append(timestamp).append('\n');
-
-        canonicalRequest.append('\n');
         canonicalRequest.append(signedHeaders).append('\n');
         // HexEncode(Hash(Payload))
-        if (data != null) {
-            canonicalRequest.append(hex(sha256(data)));
-        } else {
-            canonicalRequest.append(EMPTY_STRING_HASH);
-        }
+        canonicalRequest.append(hash);
+
         return canonicalRequest.toString();
     }
 
@@ -136,6 +139,7 @@ public class AWSSignatureVersion4 implements RequestInterceptor {
             throw new RuntimeException(e);
         }
     }
+
     static byte[] sha256(byte[] data) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -148,12 +152,6 @@ public class AWSSignatureVersion4 implements RequestInterceptor {
     @Override
     @SneakyThrows
     public void apply(RequestTemplate input) {
-//        if (!input.headers().isEmpty()) {
-//            throw new UnsupportedOperationException("headers not supported");
-//        }
-//        if (input.body() != null) {
-//            throw new UnsupportedOperationException("body not supported");
-//        }
         Target<?> target = input.feignTarget();
 
         URL url = new URL(target.url());
@@ -161,36 +159,36 @@ public class AWSSignatureVersion4 implements RequestInterceptor {
 
         String timestamp;
         synchronized (iso8601) {
-//            timestamp = iso8601.format(new Date(1643248485000L));
             timestamp = iso8601.format(new Date());
         }
 
         String credentialScope =
                 String.format("%s/%s/%s/%s", timestamp.substring(0, 8), region, service, "aws4_request");
 
-        String signedHeaders = "host;x-amz-content-sha256;x-amz-date";
-//    input.header("X-Amz-Algorithm", "AWS4-HMAC-SHA256");
-//    input.header("X-Amz-Credential", accessKey + "/" + credentialScope);
-//    input.header("X-Amz-SignedHeaders", "host");
-        byte[] data = input.body();
-        if (data != null) {
-            input.header("x-amz-content-sha256", hex(sha256(data)));
+
+        byte[] body = input.body();
+        String hash;
+        if (body != null) {
+            hash = hex(sha256(body));
         } else {
-            input.header("x-amz-content-sha256", EMPTY_STRING_HASH);
+            hash = EMPTY_STRING_HASH;
         }
+        input.header("x-amz-content-sha256", hash);
         input.header("Host", host);
         input.header("x-amz-date", timestamp);
 
-        String canonicalString = canonicalString(input, host,timestamp,signedHeaders);
+        //所有key小写排序，分号分割，拼在一起
+        String signedHeaders = input.headers().keySet().stream().sorted(Comparators.comparable())
+                .map(String::toLowerCase).collect(Collectors.joining(";"));
+
+        String canonicalString = canonicalString(input, signedHeaders, hash);
         String toSign = toSign(timestamp, credentialScope, canonicalString);
 
         byte[] signatureKey = signatureKey(secretKey, timestamp);
         String signature = hex(hmacSHA256(toSign, signatureKey));
-        String authorization = String.format("AWS4-HMAC-SHA256 Credential=%s/%s,SignedHeaders=%s, Signature=%s"
-                                                                ,accessKey, credentialScope, signedHeaders, signature);
-        input.header("Authorization",authorization);
-//    input.header("X-Amz-Signature", signature);
-
+        String authorization = String.format("AWS4-HMAC-SHA256 Credential=%s/%s,SignedHeaders=%s,Signature=%s"
+                , accessKey, credentialScope, signedHeaders, signature);
+        input.header("Authorization", authorization);
     }
 
     byte[] signatureKey(String secretKey, String timestamp) {
