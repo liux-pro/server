@@ -2,13 +2,9 @@ FROM registry.cn-beijing.aliyuncs.com/liux-pro/base-image:java as builder
 
 WORKDIR /app
 
-COPY pom.xml .
-
-RUN . "$HOME/.sdkman/bin/sdkman-init.sh" && mvn -Pnative -Pspring-repo dependency:go-offline
-
 COPY . .
 
-RUN . "$HOME/.sdkman/bin/sdkman-init.sh" && mvn -Pnative -Pspring-repo -DskipTests clean package
+RUN . "$HOME/.sdkman/bin/sdkman-init.sh" && mvn -Pnative -Pspring-repo -DskipTests package
 
 FROM registry.cn-beijing.aliyuncs.com/liux-pro/ubuntu:20.04
 
