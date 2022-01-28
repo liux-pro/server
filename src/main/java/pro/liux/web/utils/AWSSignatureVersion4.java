@@ -44,7 +44,7 @@ public class AWSSignatureVersion4 implements RequestInterceptor {
     private static final SimpleDateFormat iso8601 = new SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'");
 
     static {
-//        iso8601.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
+        //必须用GMT
         iso8601.setTimeZone(TimeZone.getTimeZone("GMT"));
     }
 
