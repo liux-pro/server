@@ -1,8 +1,4 @@
-FROM registry.cn-beijing.aliyuncs.com/liux-pro/base-image:java as prepare
-ADD pom.xml .
-RUN source "$HOME/.sdkman/bin/sdkman-init.sh" && mvn -Pnative -Phuawei-repo dependency:resolve
-
-FROM prepare as builder
+FROM registry.cn-beijing.aliyuncs.com/liux-pro/base-image:server as builder
 WORKDIR /app
 COPY . .
 RUN source "$HOME/.sdkman/bin/sdkman-init.sh" && mvn -Pnative -Phuawei-repo -DskipTests package
