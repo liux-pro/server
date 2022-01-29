@@ -17,6 +17,7 @@
         <java.version>1.8</java.version>
         <spring-cloud.version>2020.0.5</spring-cloud.version>
         <spring-boot.version>2.5.6</spring-boot.version>
+        <spring-native.version>0.10.5</spring-native.version>
     </properties>
     <profiles>
         <profile>
@@ -31,7 +32,7 @@
                 <dependency>
                     <groupId>org.springframework.experimental</groupId>
                     <artifactId>spring-native</artifactId>
-                    <version>0.10.5</version>
+                    <version>${spring-native.version}</version>
                 </dependency>
             </dependencies>
             <build>
@@ -72,7 +73,7 @@
                     <plugin>
                         <groupId>org.springframework.experimental</groupId>
                         <artifactId>spring-aot-maven-plugin</artifactId>
-                        <version>0.10.5</version>
+                        <version>${spring-native.version}</version>
                         <executions>
                             <execution>
                                 <id>generate</id>
