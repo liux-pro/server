@@ -3,6 +3,7 @@ ADD pom.xml .
 RUN . "$HOME/.sdkman/bin/sdkman-init.sh" && mvn -Pnative -Phuawei-repo dependency:resolve
 
 FROM builder as builder
+WORKDIR /app
 COPY . .
 RUN . "$HOME/.sdkman/bin/sdkman-init.sh" && mvn -Pnative -Phuawei-repo -DskipTests package
 
