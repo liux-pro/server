@@ -71,7 +71,7 @@ public class ArticleController {
 
     @PostMapping("bbb")
     public Object bbb() {
-        Map post = s3Client.list();
+        Map post = s3Client.list("test");
         return post;
     }
 

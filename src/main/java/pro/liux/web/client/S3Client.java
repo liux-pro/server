@@ -8,12 +8,14 @@ import pro.liux.web.utils.AWSSignatureVersion4;
 
 import java.util.Map;
 
-@FeignClient(name = "S3Client",configuration = AWSSignatureVersion4.class , url = "http://1.1.1.88:9000")
+@FeignClient(name = "S3Client", configuration = AWSSignatureVersion4.class, url = "http://1.1.1.88:9000")
 public interface S3Client {
     @GetMapping("/")
     Map info();
-    @GetMapping("/test")
-    Map list();
+
+    @GetMapping("/{bucket}")
+    Map list(@PathVariable("bucket") String bucket);
+
     @PutMapping("/test/{filename}")
     Map put(@PathVariable("filename") String filename, byte[] bytes);
 }
