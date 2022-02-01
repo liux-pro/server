@@ -33,11 +33,4 @@ public class XMLMessageConverter extends MappingJackson2XmlHttpMessageConverter 
         ObjectFactory<HttpMessageConverters> objectFactory = () -> new HttpMessageConverters(xmlMessageConverter);
         return new SpringDecoder(objectFactory);
     }
-
-    @Bean
-    public Encoder feignEncoder(){
-        MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
-        ObjectFactory<HttpMessageConverters> objectFactory = () -> new HttpMessageConverters(mappingJackson2HttpMessageConverter);
-        return new SpringEncoder(objectFactory);
-    }
 }
