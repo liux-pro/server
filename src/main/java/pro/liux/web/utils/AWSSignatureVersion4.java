@@ -51,6 +51,10 @@ public class AWSSignatureVersion4 implements RequestInterceptor {
     private final String accessKey;
     private final String secretKey;
 
+    public AWSSignatureVersion4(){
+        this.accessKey = "-fLbx3jNQ3roeETUBxGstydVAmoPHqz1vHMXKgfB";
+        this.secretKey = "URBSBGiop_Bdmr3snwhWaaBhM3N9XJQYzLIVb10M";
+    }
     public AWSSignatureVersion4(String accessKey,String secretKey) {
         this.accessKey = accessKey;
         this.secretKey = secretKey;

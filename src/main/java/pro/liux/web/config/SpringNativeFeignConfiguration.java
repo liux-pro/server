@@ -3,7 +3,6 @@ package pro.liux.web.config;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.cloud.openfeign.FeignClientsConfiguration;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.SynthesizedAnnotation;
 import org.springframework.nativex.hint.JdkProxyHint;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import pro.liux.web.client.DateTestClient;
 import pro.liux.web.client.S3Client;
-import pro.liux.web.utils.AWSSignatureVersion4;
 
 @Configuration
 @NativeHint(trigger = SpringNativeFeignConfiguration.class,
@@ -37,10 +35,4 @@ import pro.liux.web.utils.AWSSignatureVersion4;
 )
 @EnableFeignClients(clients = {S3Client.class, DateTestClient.class})
 public class SpringNativeFeignConfiguration {
-    @Bean
-    public AWSSignatureVersion4 addSignatureVersion4() {
-        return new AWSSignatureVersion4("-fLbx3jNQ3roeETUBxGstydVAmoPHqz1vHMXKgfB",
-                "URBSBGiop_Bdmr3snwhWaaBhM3N9XJQYzLIVb10M");
-    }
-
 }
