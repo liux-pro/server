@@ -18,9 +18,7 @@ import pro.liux.web.vo.VditorImageConvert;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @CrossOrigin
@@ -67,9 +65,15 @@ public class ArticleController {
     }
 
     @PostMapping("aaa")
-    public Object aaa() {
-        Object post = dateTestClient.getPost();
-        return post;
+    public VditorImage aaa() {
+//        Object post = dateTestClient.getPost();
+
+        VditorImage build = VditorImage.builder().errFiles(Arrays.asList("1", "2"))
+                .succMap(new HashMap<String, String>() {{
+                    put("1", "2");
+                }}).build();
+
+        return build;
     }
 
     @GetMapping("s3/list")

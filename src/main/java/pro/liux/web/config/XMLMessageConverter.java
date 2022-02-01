@@ -20,17 +20,6 @@ import java.util.List;
  * 七牛的s3返回的xml  content-type被设置成text/plain，造成无法解析
  */
 @Configuration
-public class XMLMessageConverter extends MappingJackson2XmlHttpMessageConverter {
-    public XMLMessageConverter(){
-        List<MediaType> mediaTypes = new ArrayList<>();
-        mediaTypes.add(MediaType.TEXT_PLAIN);
-        setSupportedMediaTypes(mediaTypes);
-    }
+public class XMLMessageConverter {
 
-    @Bean
-    public Decoder feignDecoder(){
-        XMLMessageConverter xmlMessageConverter = new XMLMessageConverter();
-        ObjectFactory<HttpMessageConverters> objectFactory = () -> new HttpMessageConverters(xmlMessageConverter);
-        return new SpringDecoder(objectFactory);
-    }
 }

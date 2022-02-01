@@ -1,16 +1,20 @@
 package pro.liux.web.config;
 
+import feign.codec.Decoder;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.cloud.openfeign.FeignClientsConfiguration;
+import org.springframework.cloud.openfeign.support.SpringDecoder;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.annotation.SynthesizedAnnotation;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter;
 import org.springframework.nativex.hint.JdkProxyHint;
 import org.springframework.nativex.hint.NativeHint;
 import org.springframework.nativex.hint.TypeHint;
@@ -22,6 +26,9 @@ import pro.liux.web.client.DateTestClient;
 import pro.liux.web.client.S3Client;
 import pro.liux.web.config.property.S3Property;
 import pro.liux.web.utils.AWSSignatureVersion4;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Configuration
 @NativeHint(trigger = SpringNativeFeignConfiguration.class,
@@ -61,4 +68,15 @@ public class SpringNativeFeignConfiguration {
         SpringNativeFeignConfiguration.secretKey = s3Property.getSecretKey();
         SpringNativeFeignConfiguration.endpoint = s3Property.getEndpoint();
     }
+    @Bean
+    public Decoder feignDecoder(){
+        MappingJackson2XmlHttpMessageConverter mappingJackson2XmlHttpMessageConverter = new MappingJackson2XmlHttpMessageConverter();
+        List<MediaType> supportedMediaTypes = new ArrayList<>();
+        supportedMediaTypes.add(MediaType.TEXT_PLAIN);
+        supportedMediaTypes.add(MediaType.TEXT_XML);
+        mappingJackson2XmlHttpMessageConverter.setSupportedMediaTypes(supportedMediaTypes);
+        ObjectFactory<HttpMessageConverters> objectFactory = () -> new HttpMessageConverters(mappingJackson2XmlHttpMessageConverter);
+        return new SpringDecoder(objectFactory);
+    }
+
 }
