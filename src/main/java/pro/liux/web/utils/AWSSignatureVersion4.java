@@ -17,7 +17,6 @@ import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import feign.Target;
 import lombok.SneakyThrows;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
 import org.springframework.util.comparator.Comparators;
 
@@ -36,7 +35,6 @@ import static feign.Util.UTF_8;
 
 // origin code from https://github.com/OpenFeign/feign/blob/master/sax/src/test/java/feign/sax/examples/AWSSignatureVersion4.java
 // http://docs.aws.amazon.com/general/latest/gr/signature-version-4.html
-@Configuration
 public class AWSSignatureVersion4 implements RequestInterceptor {
     private static final String EMPTY_STRING_HASH =
             "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
@@ -50,12 +48,12 @@ public class AWSSignatureVersion4 implements RequestInterceptor {
 
     String region = "myregion";
     String service = "s3";
-    String accessKey;
-    String secretKey;
+    private final String accessKey;
+    private final String secretKey;
 
-    public AWSSignatureVersion4() {
-        this.accessKey = "test-user";
-        this.secretKey = "asd123456";
+    public AWSSignatureVersion4(String accessKey,String secretKey) {
+        this.accessKey = accessKey;
+        this.secretKey = secretKey;
     }
 
     static byte[] hmacSHA256(String data, byte[] key) {

@@ -1,7 +1,9 @@
 package pro.liux.web.controller;
 
+import feign.Response;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.util.StringUtils;
@@ -30,6 +32,9 @@ public class ArticleController {
 
     @Autowired
     S3Client s3Client;
+
+    @Value("${liux.s3.access-key}")
+    private String inject;
 
 
     @PostMapping("markdown")
@@ -69,9 +74,9 @@ public class ArticleController {
         return post;
     }
 
-    @PostMapping("bbb")
+    @GetMapping("s3/list")
     public Object bbb() {
-        Map post = s3Client.list("test");
+        Map post  = s3Client.list("liux-pro");
         return post;
     }
 
@@ -90,19 +95,25 @@ public class ArticleController {
     }
 
 
-    @RequestMapping(path = "s3/upload/{filename}", method = RequestMethod.POST, consumes = {MediaType.APPLICATION_OCTET_STREAM_VALUE})
+    @PutMapping(path = "s3/{filename}", consumes = {MediaType.APPLICATION_OCTET_STREAM_VALUE})
     @ResponseStatus(HttpStatus.CREATED)
     @SneakyThrows
-    Object storeAsset(@PathVariable("filename") String filename,HttpServletRequest request) {
+    Object storeAsset(@PathVariable("filename") String filename, HttpServletRequest request) {
         InputStream body = request.getInputStream();
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
         byte[] b = new byte[10240];
         int count;
         while ((count = body.read(b)) != -1) {
-            outStream.write(b,0,count);// 写入数据
+            outStream.write(b, 0, count);// 写入数据
         }
         body.close();
         outStream.close();
-        return s3Client.put(filename,outStream.toByteArray());
+        return s3Client.put(filename, outStream.toByteArray());
+    }
+    @GetMapping(path = "s3/{filename}")
+    Object get(@PathVariable("filename") String filename) {
+       Response map = s3Client.get(filename);
+        System.out.println("map = " + map);
+        return inject;
     }
 }
