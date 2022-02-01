@@ -46,16 +46,14 @@ public class AWSSignatureVersion4 implements RequestInterceptor {
         iso8601.setTimeZone(TimeZone.getTimeZone("GMT"));
     }
 
-    String region = "myregion";
-    String service = "s3";
+    private final String region;
+    private final String service;
     private final String accessKey;
     private final String secretKey;
 
-    public AWSSignatureVersion4(){
-        this.accessKey = "-fLbx3jNQ3roeETUBxGstydVAmoPHqz1vHMXKgfB";
-        this.secretKey = "URBSBGiop_Bdmr3snwhWaaBhM3N9XJQYzLIVb10M";
-    }
-    public AWSSignatureVersion4(String accessKey,String secretKey) {
+    public AWSSignatureVersion4(String region, String service, String accessKey, String secretKey) {
+       this.region = region;
+       this.service = service;
         this.accessKey = accessKey;
         this.secretKey = secretKey;
     }
@@ -85,8 +83,6 @@ public class AWSSignatureVersion4 implements RequestInterceptor {
             canonicalRequest.append(input.queryLine().substring(1));
         }
         canonicalRequest.append('\n');
-
-
 
 
         //所有header

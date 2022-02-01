@@ -33,7 +33,7 @@ public class ArticleController {
     @Autowired
     S3Client s3Client;
 
-    @Value("${liux.s3.access-key}")
+    @Value("${oss.s3.access-key}")
     private String inject;
 
 

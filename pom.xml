@@ -22,19 +22,6 @@
     <profiles>
         <profile>
             <id>native</id>
-            <dependencies>
-                <!-- Required with Maven Surefire 2.x -->
-                <dependency>
-                    <groupId>org.junit.platform</groupId>
-                    <artifactId>junit-platform-launcher</artifactId>
-                    <scope>test</scope>
-                </dependency>
-                <dependency>
-                    <groupId>org.springframework.experimental</groupId>
-                    <artifactId>spring-native</artifactId>
-                    <version>${spring-native.version}</version>
-                </dependency>
-            </dependencies>
             <build>
                 <plugins>
                     <plugin>
@@ -93,8 +80,8 @@
             </build>
         </profile>
         <profile>
-<!--            spring native 仍然是体验版，中央仓库没有，spring自己的仓库里有-->
-<!--            华为的仓库聚合了center和spring-->
+            <!--            spring native 仍然是体验版，中央仓库没有，spring自己的仓库里有-->
+            <!--            华为的仓库聚合了center和spring-->
             <id>huawei-repo</id>
             <pluginRepositories>
                 <pluginRepository>
@@ -143,7 +130,7 @@
             </exclusions>
         </dependency>
         <dependency>
-<!--            spring-native 缩小体积-->
+            <!--            spring-native 缩小体积-->
             <groupId>org.apache.tomcat.experimental</groupId>
             <artifactId>tomcat-embed-programmatic</artifactId>
             <version>${tomcat.version}</version>
@@ -162,16 +149,35 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
         </dependency>
-<!--        &lt;!&ndash; https://mvnrepository.com/artifact/com.alibaba/fastjson &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>com.alibaba</groupId>-->
-<!--            <artifactId>fastjson</artifactId>-->
-<!--            <version>1.2.79</version>-->
-<!--        </dependency>-->
+        <!-- spring-native -->
+        <!-- Required with Maven Surefire 2.x -->
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-launcher</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.experimental</groupId>
+            <artifactId>spring-native</artifactId>
+            <version>${spring-native.version}</version>
+        </dependency>
+
+        <!--        &lt;!&ndash; https://mvnrepository.com/artifact/com.alibaba/fastjson &ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.alibaba</groupId>-->
+        <!--            <artifactId>fastjson</artifactId>-->
+        <!--            <version>1.2.79</version>-->
+        <!--        </dependency>-->
 
 
     </dependencies>
@@ -199,6 +205,14 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.springframework.boot</groupId>
+                            <artifactId>spring-boot-configuration-processor</artifactId>
+                        </exclude>
+                    </excludes>
+                </configuration>
             </plugin>
         </plugins>
     </build>
