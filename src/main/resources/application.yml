@@ -19,6 +19,6 @@ spring:
 oss:
   s3:
     access-key: -fLbx3jNQ3roeETUBxGstydVAmoPHqz1vHMXKgfB
-    secret-key: -fLbx3jNQ3roeETUBxGstydVAmoPHqz1vHMXKg
+    secret-key: URBSBGiop_Bdmr3snwhWaaBhM3N9XJQYzLIVb10M
     service: s3
-    region: mytegion
+    region: myregion
