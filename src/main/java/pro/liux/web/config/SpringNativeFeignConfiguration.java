@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import pro.liux.web.client.DateTestClient;
 import pro.liux.web.client.S3Client;
+import pro.liux.web.utils.AWSSignatureVersion4;
 
 @Configuration
 @NativeHint(trigger = SpringNativeFeignConfiguration.class,
@@ -34,5 +35,6 @@ import pro.liux.web.client.S3Client;
         }
 )
 @EnableFeignClients(clients = {S3Client.class, DateTestClient.class})
+@TypeHint(types = AWSSignatureVersion4.class)
 public class SpringNativeFeignConfiguration {
 }
