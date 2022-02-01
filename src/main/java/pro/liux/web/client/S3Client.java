@@ -2,14 +2,15 @@ package pro.liux.web.client;
 
 import feign.Response;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
-import pro.liux.web.config.S3FeignConfiguration;
+import pro.liux.web.utils.AWSSignatureVersion4;
 
 import java.util.Map;
 
-@FeignClient(name = "S3Client", configuration = S3FeignConfiguration.class, url = "https://s3-cn-north-1.qiniucs.com")
+@FeignClient(name = "S3Client", configuration = AWSSignatureVersion4.class, url = "${oss.s3.endpoint}")
 public interface S3Client {
     @GetMapping("/")
     Map info();

@@ -16,12 +16,12 @@ package pro.liux.web.utils;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import feign.Target;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import org.springframework.util.StringUtils;
 import org.springframework.util.comparator.Comparators;
+import pro.liux.web.config.SpringNativeFeignConfiguration;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -46,24 +46,24 @@ public class AWSSignatureVersion4 implements RequestInterceptor {
 
     private static final SimpleDateFormat iso8601 = new SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'");
 
-    static {
-        //必须用GMT
-        iso8601.setTimeZone(TimeZone.getTimeZone("GMT"));
-    }
-
     private String region;
     private String service;
     private String accessKey;
     private String secretKey;
-
-    public AWSSignatureVersion4(String region, String service, String accessKey, String secretKey) {
-        this.region = region;
-        this.service = service;
-        this.accessKey = accessKey;
-        this.secretKey = secretKey;
-    }
+    private String endpoint;
 
     public AWSSignatureVersion4() {
+        this.region = SpringNativeFeignConfiguration.region;
+        this.service = SpringNativeFeignConfiguration.service;
+        this.accessKey = SpringNativeFeignConfiguration.accessKey;
+        this.secretKey = SpringNativeFeignConfiguration.secretKey;
+        this.endpoint = SpringNativeFeignConfiguration.endpoint;
+    }
+
+
+    static {
+        //必须用GMT
+        iso8601.setTimeZone(TimeZone.getTimeZone("GMT"));
     }
 
     static byte[] hmacSHA256(String data, byte[] key) {

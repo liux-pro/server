@@ -19,6 +19,7 @@ import pro.liux.web.vo.VditorImageConvert;
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -32,9 +33,6 @@ public class ArticleController {
 
     @Autowired
     S3Client s3Client;
-
-    @Value("${oss.s3.access-key}")
-    private String inject;
 
 
     @PostMapping("markdown")
@@ -76,7 +74,7 @@ public class ArticleController {
 
     @GetMapping("s3/list")
     public Object bbb() {
-        Map post  = s3Client.list("liux-pro");
+        Map post = s3Client.list("liux-pro");
         return post;
     }
 
@@ -110,10 +108,11 @@ public class ArticleController {
         outStream.close();
         return s3Client.put(filename, outStream.toByteArray());
     }
+
     @GetMapping(path = "s3/{filename}")
-    Object get(@PathVariable("filename") String filename) {
-       Response map = s3Client.get(filename);
+    Map get(@PathVariable("filename") String filename) {
+        Response map = s3Client.get(filename);
         System.out.println("map = " + map);
-        return inject;
+        return new HashMap();
     }
 }
