@@ -68,6 +68,12 @@ public class SpringNativeFeignConfiguration {
         SpringNativeFeignConfiguration.secretKey = s3Property.getSecretKey();
         SpringNativeFeignConfiguration.endpoint = s3Property.getEndpoint();
     }
+
+    /**
+     * 七牛的s3返回的xml  content-type被设置成text/plain，造成无法解析
+     * 扩展xml解析器，使其支持text/plain
+     * @return Decoder
+     */
     @Bean
     public Decoder feignDecoder(){
         MappingJackson2XmlHttpMessageConverter mappingJackson2XmlHttpMessageConverter = new MappingJackson2XmlHttpMessageConverter();
