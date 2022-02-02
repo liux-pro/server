@@ -66,7 +66,7 @@ public class ArticleController {
 
     @PostMapping("aaa")
     public VditorImage aaa() {
-//        Object post = dateTestClient.getPost();
+        Object post = dateTestClient.getPost();
 
         VditorImage build = VditorImage.builder().errFiles(Arrays.asList("1", "2"))
                 .succMap(new HashMap<String, String>() {{

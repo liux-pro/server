@@ -159,6 +159,11 @@
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
         </dependency>
+<!--        诊断-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
         <!-- spring-native -->
         <!-- Required with Maven Surefire 2.x -->
         <dependency>
