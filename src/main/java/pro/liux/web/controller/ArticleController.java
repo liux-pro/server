@@ -12,6 +12,7 @@ import pro.liux.web.client.DateTestClient;
 import pro.liux.web.client.S3Client;
 import pro.liux.web.service.BlogService;
 import pro.liux.web.service.TestService;
+import pro.liux.web.utils.UUID;
 import pro.liux.web.vo.*;
 import pro.liux.web.vo.s3.ListBucketResult;
 
@@ -45,8 +46,7 @@ public class ArticleController {
 
     @PostMapping("upload")
     public Result uploadFile(@RequestParam("file[]") MultipartFile file) throws IOException {
-        String imgURL = blogService.uploadImg(file.getOriginalFilename(), file.getBytes());
-
+        String imgURL = blogService.uploadImg(UUID.getUUID()+file.getOriginalFilename(), file.getBytes());
 
         VditorImage vditorImage = VditorImage.
                 builder()
@@ -115,7 +115,8 @@ public class ArticleController {
         }
         body.close();
         outStream.close();
-        return s3Client.put(filename, outStream.toByteArray());
+        Response put = s3Client.put(filename, outStream.toByteArray());
+        return put.status();
     }
 
     @GetMapping(path = "s3/{filename}")
