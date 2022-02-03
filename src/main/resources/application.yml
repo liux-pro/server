@@ -16,8 +16,9 @@ spring:
         max-wait: -1    #最大阻塞等待时间(负数表示没限制)
         max-idle: 5    #最大空闲
         min-idle: 0     #最小空闲
-oss:
-  s3:
+liux-pro:
+  host: liux.pro
+  oss:
     access-key: -fLbx3jNQ3roeETUBxGstydVAmoPHqz1vHMXKgfB
     secret-key: URBSBGiop_Bdmr3snwhWaaBhM3N9XJQYzLIVb10M
     service: s3

@@ -11,7 +11,7 @@ import pro.liux.web.vo.s3.ListBucketResult;
 
 import java.util.Map;
 
-@FeignClient(name = "S3Client", configuration = AWSSignatureVersion4.class, url = "${oss.s3.endpoint}")
+@FeignClient(name = "S3Client", configuration = AWSSignatureVersion4.class, url = "${liux-pro.oss.endpoint}")
 public interface S3Client {
     @GetMapping("/")
     Map info();

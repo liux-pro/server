@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import pro.liux.web.client.DateTestClient;
 import pro.liux.web.client.S3Client;
-import pro.liux.web.config.property.S3Property;
+import pro.liux.web.config.property.OSS;
 import pro.liux.web.utils.AWSSignatureVersion4;
 
 import java.util.ArrayList;
@@ -60,13 +60,13 @@ public class SpringNativeFeignConfiguration {
     public static String endpoint;
 
     public SpringNativeFeignConfiguration(
-            @Autowired S3Property s3Property
+            @Autowired OSS OSS
     ) {
-        SpringNativeFeignConfiguration.region = s3Property.getRegion();
-        SpringNativeFeignConfiguration.service = s3Property.getService();
-        SpringNativeFeignConfiguration.accessKey = s3Property.getAccessKey();
-        SpringNativeFeignConfiguration.secretKey = s3Property.getSecretKey();
-        SpringNativeFeignConfiguration.endpoint = s3Property.getEndpoint();
+        SpringNativeFeignConfiguration.region = OSS.getRegion();
+        SpringNativeFeignConfiguration.service = OSS.getService();
+        SpringNativeFeignConfiguration.accessKey = OSS.getAccessKey();
+        SpringNativeFeignConfiguration.secretKey = OSS.getSecretKey();
+        SpringNativeFeignConfiguration.endpoint = OSS.getEndpoint();
     }
 
     /**

@@ -5,10 +5,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 
-@ConfigurationProperties(prefix = "oss.s3")
+@ConfigurationProperties(prefix = "liux-pro.oss")
 @Configuration
 @Data
-public class S3Property {
+public class OSS {
     private String region;
     private String service;
     private String accessKey;

@@ -35,7 +35,7 @@ public class ArticleController {
      */
     @PostMapping("upload")
     public Result uploadFile(@RequestParam("file[]") MultipartFile file) throws IOException {
-        String imgURL = blogService.uploadImg(UUID.getUUID() + file.getOriginalFilename(), file.getBytes());
+        String imgURL = blogService.uploadImg(UUID.getUUID()+"/" + file.getOriginalFilename(), file.getBytes());
 
         VditorImage vditorImage = VditorImage.
                 builder()
@@ -59,7 +59,7 @@ public class ArticleController {
             VditorImageConvert convert =
                     VditorImageConvert.builder()
                             .originalURL(oldUrl)
-                            .url("https://via.placeholder.com/150")
+                            .url(oldUrl)
                             .build();
             return Result.success(convert);
         }

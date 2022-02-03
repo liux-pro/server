@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import pro.liux.web.client.S3Client;
-import pro.liux.web.config.property.S3Property;
+import pro.liux.web.config.property.OSS;
 import pro.liux.web.service.BlogService;
 import pro.liux.web.utils.EncryptUtils;
 import pro.liux.web.utils.UUID;
@@ -18,7 +18,7 @@ public class BlogServiceImpl implements BlogService {
     S3Client s3Client;
 
     @Autowired
-    S3Property s3Property;
+    OSS OSS;
 
 
     @Override
@@ -31,8 +31,7 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public String uploadImg(String fileKey, byte[] image) {
         s3Client.put(fileKey, image);
-        String ossDirectLink = getOssDirectLink(fileKey);
-        return ossDirectLink;
+        return getOssDirectLink(fileKey);
     }
 
     @Override
@@ -50,8 +49,8 @@ public class BlogServiceImpl implements BlogService {
      * @return url
      */
     public String getOssDirectLink(String fileKey) {
-        return String.format("%s://%s/%s", s3Property.getProtocol(),
-                s3Property.getCdnHost(), fileKey);
+        return String.format("%s://%s/%s", OSS.getProtocol(),
+                OSS.getCdnHost(), fileKey);
     }
 
     /**
@@ -63,9 +62,9 @@ public class BlogServiceImpl implements BlogService {
      */
     public String getAuthedUrl(String url, Integer time) {
         url = url + "?e=" + ((System.currentTimeMillis() / 1000) + time);
-        byte[] bytes = EncryptUtils.hmacSHA1(url, s3Property.getSecretKey().getBytes(StandardCharsets.UTF_8));
+        byte[] bytes = EncryptUtils.hmacSHA1(url, OSS.getSecretKey().getBytes(StandardCharsets.UTF_8));
         String encodedString = Base64.getUrlEncoder().encodeToString(bytes);
-        url = url + "&token=" + s3Property.getAccessKey() + ":" + encodedString;
+        url = url + "&token=" + OSS.getAccessKey() + ":" + encodedString;
         return url;
     }
 }
