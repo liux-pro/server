@@ -1,13 +1,10 @@
 package pro.liux.web.utils;
 
 import org.bouncycastle.util.Strings;
-import pro.liux.web.config.property.S3Property;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
-import java.util.Base64;
 
 
 public class EncryptUtils {
@@ -28,6 +25,7 @@ public class EncryptUtils {
             throw new RuntimeException(e);
         }
     }
+
     public static byte[] sha1(String data) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-1");
@@ -36,6 +34,7 @@ public class EncryptUtils {
             throw new RuntimeException(e);
         }
     }
+
     public static byte[] sha1(byte[] data) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-1");
@@ -44,6 +43,7 @@ public class EncryptUtils {
             throw new RuntimeException(e);
         }
     }
+
     public static String hex(byte[] data) {
         StringBuilder result = new StringBuilder(data.length * 2);
         for (byte b : data) {
@@ -62,6 +62,7 @@ public class EncryptUtils {
             throw new RuntimeException(e);
         }
     }
+
     public static byte[] hmacSHA1(String data, byte[] key) {
         try {
             String algorithm = "HmacSHA1";

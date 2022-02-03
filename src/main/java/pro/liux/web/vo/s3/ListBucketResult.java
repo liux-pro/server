@@ -1,4 +1,5 @@
 package pro.liux.web.vo.s3;
+
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import lombok.Data;
@@ -27,7 +28,7 @@ public class ListBucketResult {
     private String IsTruncated;
 
     @JacksonXmlProperty(localName = "Contents")
-    @JacksonXmlElementWrapper(useWrapping=false)
+    @JacksonXmlElementWrapper(useWrapping = false)
     private List<Contents> Contents;
 
 }

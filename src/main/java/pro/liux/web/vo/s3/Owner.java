@@ -1,6 +1,6 @@
 /**
-  * Copyright 2022 bejson.com 
-  */
+ * Copyright 2022 bejson.com
+ */
 package pro.liux.web.vo.s3;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;

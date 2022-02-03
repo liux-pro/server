@@ -9,6 +9,6 @@ import java.util.Map;
 @Data
 @Builder
 public class VditorImage {
-    private Map<String,String> succMap;
+    private Map<String, String> succMap;
     private List<String> errFiles;
 }

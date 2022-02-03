@@ -1,7 +1,5 @@
 package pro.liux.web.service.impl;
 
-import org.apache.commons.io.filefilter.FileFilterUtils;
-import org.apache.commons.io.filefilter.MagicNumberFileFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -11,9 +9,6 @@ import pro.liux.web.service.BlogService;
 import pro.liux.web.utils.EncryptUtils;
 import pro.liux.web.utils.UUID;
 
-import java.io.File;
-import java.net.FileNameMap;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
@@ -34,8 +29,8 @@ public class BlogServiceImpl implements BlogService {
 
 
     @Override
-    public String uploadImg(String fileKey,byte[] image) {
-        s3Client.put(fileKey,image);
+    public String uploadImg(String fileKey, byte[] image) {
+        s3Client.put(fileKey, image);
         String ossDirectLink = getOssDirectLink(fileKey, 1000);
         return ossDirectLink;
     }

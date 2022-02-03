@@ -10,13 +10,14 @@ class WebApplicationTests {
 
     @Autowired
     S3Client s3Client;
+
     @Test
     void contextLoads() {
 
     }
 
     @Test
-    public void s3test(){
+    public void s3test() {
         Object info = s3Client.info();
         System.out.println(info);
     }

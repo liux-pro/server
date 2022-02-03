@@ -20,17 +20,12 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import org.bouncycastle.util.Strings;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.util.StringUtils;
 import org.springframework.util.comparator.Comparators;
 import pro.liux.web.config.SpringNativeFeignConfiguration;
 
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
 import java.net.URI;
 import java.net.URL;
-import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -48,11 +43,17 @@ public class AWSSignatureVersion4 implements RequestInterceptor {
 
     private static final SimpleDateFormat iso8601 = new SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'");
 
+    static {
+        //必须用GMT
+        iso8601.setTimeZone(TimeZone.getTimeZone("GMT"));
+    }
+
     private String region;
     private String service;
     private String accessKey;
     private String secretKey;
     private String endpoint;
+
 
     public AWSSignatureVersion4() {
         this.region = SpringNativeFeignConfiguration.region;
@@ -61,14 +62,6 @@ public class AWSSignatureVersion4 implements RequestInterceptor {
         this.secretKey = SpringNativeFeignConfiguration.secretKey;
         this.endpoint = SpringNativeFeignConfiguration.endpoint;
     }
-
-
-    static {
-        //必须用GMT
-        iso8601.setTimeZone(TimeZone.getTimeZone("GMT"));
-    }
-
-
 
     private static String canonicalString(RequestTemplate input, String signedHeaders, String hash) {
         StringBuilder canonicalRequest = new StringBuilder();
@@ -120,7 +113,6 @@ public class AWSSignatureVersion4 implements RequestInterceptor {
         toSign.append(EncryptUtils.hex(EncryptUtils.sha256(canonicalRequest)));
         return toSign.toString();
     }
-
 
 
     @Override
