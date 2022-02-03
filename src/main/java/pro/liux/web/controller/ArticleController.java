@@ -3,7 +3,6 @@ package pro.liux.web.controller;
 import feign.Response;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.util.StringUtils;
@@ -11,10 +10,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pro.liux.web.client.DateTestClient;
 import pro.liux.web.client.S3Client;
+import pro.liux.web.service.BlogService;
 import pro.liux.web.service.TestService;
-import pro.liux.web.vo.Result;
-import pro.liux.web.vo.VditorImage;
-import pro.liux.web.vo.VditorImageConvert;
+import pro.liux.web.vo.*;
+import pro.liux.web.vo.s3.ListBucketResult;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
@@ -32,6 +31,9 @@ public class ArticleController {
     @Autowired
     S3Client s3Client;
 
+    @Autowired
+    BlogService blogService;
+
 
     @PostMapping("markdown")
     public String getArticle() {
@@ -40,24 +42,15 @@ public class ArticleController {
         return "# HelloWord";
     }
 
-    private String fileLocation = "";
 
     @PostMapping("upload")
     public Result uploadFile(@RequestParam("file[]") MultipartFile file) throws IOException {
-        InputStream in = file.getInputStream();
-        File currDir = new File(".");
-        String path = currDir.getAbsolutePath();
-        fileLocation = path.substring(0, path.length() - 1) + file.getOriginalFilename();
-        FileOutputStream f = new FileOutputStream(fileLocation);
-        int ch = 0;
-        while ((ch = in.read()) != -1) {
-            f.write(ch);
-        }
-        f.flush();
-        f.close();
+        String imgURL = blogService.uploadImg(file.getOriginalFilename(), file.getBytes());
+
+
         VditorImage vditorImage = VditorImage.
                 builder()
-                .succMap(Collections.singletonMap(file.getOriginalFilename(), "https://s3.bmp.ovh/imgs/2022/01/de5950621639e899.jpg"))
+                .succMap(Collections.singletonMap(file.getOriginalFilename(), imgURL))
                 .build();
         Result result = Result.success(null);
         result.setData(vditorImage);
@@ -77,11 +70,17 @@ public class ArticleController {
     }
 
     @GetMapping("s3/list")
-    public Object bbb() {
-        Map post = s3Client.list("liux-pro");
+    public ListBucketResult bbb() {
+        ListBucketResult post = s3Client.list("liux-pro", 100);
+        System.out.println(post);
         return post;
     }
 
+    /**
+     * vditor 图片链接转换，下载原链接图片并转存返回新url
+     *
+     * @param source {”url“：origin-url}
+     */
     @PostMapping("imgUrlConvert")
     public Result uploadFile(@RequestBody Map<String, String> source) {
         String oldUrl = source.get("url");
@@ -96,7 +95,13 @@ public class ArticleController {
         return Result.badRequest();
     }
 
-
+    /**
+     * 上传图片接口
+     *
+     * @param filename
+     * @param request
+     * @return
+     */
     @PutMapping(path = "s3/{filename}", consumes = {MediaType.APPLICATION_OCTET_STREAM_VALUE})
     @ResponseStatus(HttpStatus.CREATED)
     @SneakyThrows
@@ -114,9 +119,9 @@ public class ArticleController {
     }
 
     @GetMapping(path = "s3/{filename}")
-    Map get(@PathVariable("filename") String filename) {
+    Response get(@PathVariable("filename") String filename) {
         Response map = s3Client.get(filename);
         System.out.println("map = " + map);
-        return new HashMap();
+        return map;
     }
 }

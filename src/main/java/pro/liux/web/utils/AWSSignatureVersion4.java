@@ -19,6 +19,9 @@ import feign.Target;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
+import org.bouncycastle.util.Strings;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.util.StringUtils;
 import org.springframework.util.comparator.Comparators;
 import pro.liux.web.config.SpringNativeFeignConfiguration;
@@ -34,7 +37,6 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.stream.Collectors;
 
-import static feign.Util.UTF_8;
 
 // origin code from https://github.com/OpenFeign/feign/blob/master/sax/src/test/java/feign/sax/examples/AWSSignatureVersion4.java
 // http://docs.aws.amazon.com/general/latest/gr/signature-version-4.html
@@ -66,16 +68,7 @@ public class AWSSignatureVersion4 implements RequestInterceptor {
         iso8601.setTimeZone(TimeZone.getTimeZone("GMT"));
     }
 
-    static byte[] hmacSHA256(String data, byte[] key) {
-        try {
-            String algorithm = "HmacSHA256";
-            Mac mac = Mac.getInstance(algorithm);
-            mac.init(new SecretKeySpec(key, algorithm));
-            return mac.doFinal(data.getBytes(UTF_8));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
+
 
     private static String canonicalString(RequestTemplate input, String signedHeaders, String hash) {
         StringBuilder canonicalRequest = new StringBuilder();
@@ -124,36 +117,11 @@ public class AWSSignatureVersion4 implements RequestInterceptor {
         // CredentialScope + '\n' +
         toSign.append(credentialScope).append('\n');
         // HexEncode(Hash(CanonicalRequest))
-        toSign.append(hex(sha256(canonicalRequest)));
+        toSign.append(EncryptUtils.hex(EncryptUtils.sha256(canonicalRequest)));
         return toSign.toString();
     }
 
 
-    private static String hex(byte[] data) {
-        StringBuilder result = new StringBuilder(data.length * 2);
-        for (byte b : data) {
-            result.append(String.format("%02x", b & 0xff));
-        }
-        return result.toString();
-    }
-
-    static byte[] sha256(String data) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            return digest.digest(data.getBytes(UTF_8));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    static byte[] sha256(byte[] data) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            return digest.digest(data);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     @Override
     @SneakyThrows
@@ -175,7 +143,7 @@ public class AWSSignatureVersion4 implements RequestInterceptor {
         byte[] body = input.body();
         String hash;
         if (body != null) {
-            hash = hex(sha256(body));
+            hash = EncryptUtils.hex(EncryptUtils.sha256(body));
         } else {
             hash = EMPTY_STRING_HASH;
         }
@@ -191,18 +159,18 @@ public class AWSSignatureVersion4 implements RequestInterceptor {
         String toSign = toSign(timestamp, credentialScope, canonicalString);
 
         byte[] signatureKey = signatureKey(secretKey, timestamp);
-        String signature = hex(hmacSHA256(toSign, signatureKey));
+        String signature = EncryptUtils.hex(EncryptUtils.hmacSHA256(toSign, signatureKey));
         String authorization = String.format("AWS4-HMAC-SHA256 Credential=%s/%s,SignedHeaders=%s,Signature=%s"
                 , accessKey, credentialScope, signedHeaders, signature);
         input.header("Authorization", authorization);
     }
 
     byte[] signatureKey(String secretKey, String timestamp) {
-        byte[] kSecret = ("AWS4" + secretKey).getBytes(UTF_8);
-        byte[] kDate = hmacSHA256(timestamp.substring(0, 8), kSecret);
-        byte[] kRegion = hmacSHA256(region, kDate);
-        byte[] kService = hmacSHA256(service, kRegion);
-        byte[] kSigning = hmacSHA256("aws4_request", kService);
+        byte[] kSecret = Strings.toByteArray("AWS4" + secretKey);
+        byte[] kDate = EncryptUtils.hmacSHA256(timestamp.substring(0, 8), kSecret);
+        byte[] kRegion = EncryptUtils.hmacSHA256(region, kDate);
+        byte[] kService = EncryptUtils.hmacSHA256(service, kRegion);
+        byte[] kSigning = EncryptUtils.hmacSHA256("aws4_request", kService);
         return kSigning;
     }
 }

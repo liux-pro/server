@@ -80,6 +80,7 @@ public class SpringNativeFeignConfiguration {
         List<MediaType> supportedMediaTypes = new ArrayList<>();
         supportedMediaTypes.add(MediaType.TEXT_PLAIN);
         supportedMediaTypes.add(MediaType.TEXT_XML);
+        supportedMediaTypes.add(MediaType.APPLICATION_XML);
         mappingJackson2XmlHttpMessageConverter.setSupportedMediaTypes(supportedMediaTypes);
         ObjectFactory<HttpMessageConverters> objectFactory = () -> new HttpMessageConverters(mappingJackson2XmlHttpMessageConverter);
         return new SpringDecoder(objectFactory);
