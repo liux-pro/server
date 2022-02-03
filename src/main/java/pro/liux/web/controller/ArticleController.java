@@ -27,26 +27,15 @@ public class ArticleController {
     TestService testService;
 
     @Autowired
-    DateTestClient dateTestClient;
-
-    @Autowired
     S3Client s3Client;
 
     @Autowired
     BlogService blogService;
 
 
-    @PostMapping("markdown")
-    public String getArticle() {
-        File file = new File("");
-        System.out.println(file.getAbsolutePath());
-        return "# HelloWord";
-    }
-
-
     @PostMapping("upload")
     public Result uploadFile(@RequestParam("file[]") MultipartFile file) throws IOException {
-        String imgURL = blogService.uploadImg(UUID.getUUID()+file.getOriginalFilename(), file.getBytes());
+        String imgURL = blogService.uploadImg(UUID.getUUID() + file.getOriginalFilename(), file.getBytes());
 
         VditorImage vditorImage = VditorImage.
                 builder()
@@ -57,24 +46,6 @@ public class ArticleController {
         return result;
     }
 
-    @PostMapping("aaa")
-    public VditorImage aaa() {
-        Object post = dateTestClient.getPost();
-
-        VditorImage build = VditorImage.builder().errFiles(Arrays.asList("1", "2"))
-                .succMap(new HashMap<String, String>() {{
-                    put("1", "2");
-                }}).build();
-
-        return build;
-    }
-
-    @GetMapping("s3/list")
-    public ListBucketResult bbb() {
-        ListBucketResult post = s3Client.list("liux-pro", 100);
-        System.out.println(post);
-        return post;
-    }
 
     /**
      * vditor 图片链接转换，下载原链接图片并转存返回新url
@@ -95,34 +66,5 @@ public class ArticleController {
         return Result.badRequest();
     }
 
-    /**
-     * 上传图片接口
-     *
-     * @param filename
-     * @param request
-     * @return
-     */
-    @PutMapping(path = "s3/{filename}", consumes = {MediaType.APPLICATION_OCTET_STREAM_VALUE})
-    @ResponseStatus(HttpStatus.CREATED)
-    @SneakyThrows
-    Object storeAsset(@PathVariable("filename") String filename, HttpServletRequest request) {
-        InputStream body = request.getInputStream();
-        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-        byte[] b = new byte[10240];
-        int count;
-        while ((count = body.read(b)) != -1) {
-            outStream.write(b, 0, count);// 写入数据
-        }
-        body.close();
-        outStream.close();
-        Response put = s3Client.put(filename, outStream.toByteArray());
-        return put.status();
-    }
 
-    @GetMapping(path = "s3/{filename}")
-    Response get(@PathVariable("filename") String filename) {
-        Response map = s3Client.get(filename);
-        System.out.println("map = " + map);
-        return map;
-    }
 }
