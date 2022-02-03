@@ -1,6 +1,10 @@
 package pro.liux.web.service;
 
 import org.springframework.web.multipart.MultipartFile;
+import pro.liux.web.utils.EncryptUtils;
+
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 
 public interface BlogService {
     /**
@@ -21,10 +25,26 @@ public interface BlogService {
     String uploadImg(String fileKey, byte[] image);
 
     /**
-     * 上传图片到oss，返回链接
-     *
-     * @param file 表单 图片
-     * @return url
+     * 上传文件到oss，返回链接
+     * @param file
+     * @return
      */
     String uploadImg(MultipartFile file);
+
+    /**
+     * 生成文件直链
+     *
+     * @param fileKey 文件名
+     * @return url
+     */
+    String getOssDirectLink(String fileKey);
+
+    /**
+     * 给url添加签名
+     *
+     * @param url  原始文件url
+     * @param time 有效时间 秒
+     * @return url
+     */
+    String getAuthedUrl(String url, Integer time);
 }
