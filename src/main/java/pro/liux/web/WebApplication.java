@@ -4,8 +4,8 @@ package pro.liux.web;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Import;
+import pro.liux.web.client.BaseClient;
 import pro.liux.web.utils.SpringContextUtil;
 
 @SpringBootApplication
@@ -13,7 +13,10 @@ import pro.liux.web.utils.SpringContextUtil;
 @Import(SpringContextUtil.class)
 public class WebApplication {
     public static void main(String[] args) {
-        ConfigurableApplicationContext context = SpringApplication.run(WebApplication.class, args);
+        SpringApplication.run(WebApplication.class, args);
+        BaseClient baseClient = new BaseClient();
+        Boolean aBoolean = baseClient.uploadFile(new byte[1]);
+        System.out.println(aBoolean);
     }
 
 }
