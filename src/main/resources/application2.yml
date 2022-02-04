@@ -19,11 +19,11 @@ spring:
 liux-pro:
   host: liux.pro
   oss:
-    access-key: legend
-    secret-key: 123456789
+    access-key: -fLbx3jNQ3roeETUBxGstydVAmoPHqz1vHMXKgfB
+    secret-key: URBSBGiop_Bdmr3snwhWaaBhM3N9XJQYzLIVb10M
     service: s3
     region: myregion
-    endpoint: http://localhost:9000
+    endpoint: http://s3-cn-north-1.qiniucs.com
     bucket: liux-pro
-    cdn-host: localhost:9000/liux-pro
+    cdn-host: static.liux.pro
     protocol: http
