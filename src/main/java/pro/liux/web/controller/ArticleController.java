@@ -27,12 +27,13 @@ public class ArticleController {
 
     /**
      * vditor 上传文件
+     *
      * @param file form-data 表单文件
      * @return vditor兼容的图片地址
      */
     @PostMapping("upload")
     public Result uploadFile(@RequestParam("file[]") MultipartFile file) throws IOException {
-        String imgURL = blogService.uploadImg(UUID.getUUID()+"/" + file.getOriginalFilename(), file.getBytes());
+        String imgURL = blogService.uploadImg(UUID.getUUID() + "/" + file.getOriginalFilename(), file.getBytes());
 
         VditorImage vditorImage = VditorImage.
                 builder()

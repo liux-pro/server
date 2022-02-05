@@ -17,7 +17,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.bouncycastle.util.Strings;
-import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
 import org.springframework.util.comparator.Comparators;
 import pro.liux.web.config.property.OSS;
@@ -31,6 +32,7 @@ import java.util.stream.Collectors;
 // http://docs.aws.amazon.com/general/latest/gr/signature-version-4.html
 @Getter
 @Setter
+@Configuration
 public class AWSSignatureVersion4 {
     private static final String EMPTY_STRING_HASH =
             "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
@@ -48,8 +50,14 @@ public class AWSSignatureVersion4 {
     private String secretKey;
     private String endpoint;
 
-    public AWSSignatureVersion4(OSS oss) {
-        BeanUtils.copyProperties(oss, this);
+    public AWSSignatureVersion4(@Autowired OSS oss) {
+        this.region = oss.getRegion();
+        this.service = oss.getService();
+        this.accessKey = oss.getAccessKey();
+        this.secretKey = oss.getSecretKey();
+        this.endpoint = oss.getEndpoint();
+        //目前native不不能用
+        //BeanUtils.copyProperties(oss, this);
     }
 
     private static String canonicalString(WebEntry input, Map<String, List<String>> headers, String signedHeaders, String hash) {
@@ -104,21 +112,6 @@ public class AWSSignatureVersion4 {
     }
 
     /**
-     * 封装Headers和请求
-     */
-    @Getter
-    @Setter
-    @AllArgsConstructor
-    public static class WebEntry {
-        private Map<String, List<String>> headers;
-        private String method;
-        private String host;
-        private String queryString;
-        private String uriPath;
-        private byte[] body;
-    }
-
-    /**
      * 计算签名
      *
      * @param input 传进来header和body
@@ -170,5 +163,20 @@ public class AWSSignatureVersion4 {
         byte[] kService = EncryptUtils.hmacSHA256(service, kRegion);
         byte[] kSigning = EncryptUtils.hmacSHA256("aws4_request", kService);
         return kSigning;
+    }
+
+    /**
+     * 封装Headers和请求
+     */
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    public static class WebEntry {
+        private Map<String, List<String>> headers;
+        private String method;
+        private String host;
+        private String queryString;
+        private String uriPath;
+        private byte[] body;
     }
 }
