@@ -13,11 +13,14 @@
  */
 package pro.liux.web.utils;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import org.bouncycastle.util.Strings;
+import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.util.comparator.Comparators;
-import pro.liux.web.config.SpringNativeFeignConfiguration;
+import pro.liux.web.config.property.OSS;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -45,16 +48,11 @@ public class AWSSignatureVersion4 {
     private String secretKey;
     private String endpoint;
 
-
-    public AWSSignatureVersion4() {
-        this.region = SpringNativeFeignConfiguration.region;
-        this.service = SpringNativeFeignConfiguration.service;
-        this.accessKey = SpringNativeFeignConfiguration.accessKey;
-        this.secretKey = SpringNativeFeignConfiguration.secretKey;
-        this.endpoint = SpringNativeFeignConfiguration.endpoint;
+    public AWSSignatureVersion4(OSS oss) {
+        BeanUtils.copyProperties(oss, this);
     }
 
-    private static String canonicalString(WebEntry input, String signedHeaders, String hash) {
+    private static String canonicalString(WebEntry input, Map<String, List<String>> headers, String signedHeaders, String hash) {
         StringBuilder canonicalRequest = new StringBuilder();
         // 请求方式（GET POST） + '\n' +
         canonicalRequest.append(input.getMethod().toUpperCase()).append('\n');
@@ -71,7 +69,7 @@ public class AWSSignatureVersion4 {
 
 
         //所有header
-        String canonicalHeaders = input.getHeaders().entrySet().stream()
+        String canonicalHeaders = headers.entrySet().stream()
                 //key转成小写
                 .collect(Collectors.toMap(key -> key.getKey().toLowerCase()
                         , Map.Entry::getValue)).entrySet().stream()
@@ -120,8 +118,15 @@ public class AWSSignatureVersion4 {
         private byte[] body;
     }
 
+    /**
+     * 计算签名
+     *
+     * @param input 传进来header和body
+     * @return 计算完成的header，把请求header清空并且替换为这个map
+     */
     public Map<String, List<String>> calc(WebEntry input) {
-        Map<String, List<String>> headers = new HashMap<>();
+        // 可能传进来的是只读的map
+        Map<String, List<String>> headers = new HashMap<>(input.headers);
 
         String timestamp;
         synchronized (iso8601) {
@@ -139,22 +144,22 @@ public class AWSSignatureVersion4 {
         } else {
             hash = EMPTY_STRING_HASH;
         }
-        input.getHeaders().put("x-amz-content-sha256", List.of(hash));
-        input.getHeaders().put("Host", List.of(input.getHost()));
-        input.getHeaders().put("x-amz-date", List.of(timestamp));
+        headers.put("x-amz-content-sha256", List.of(hash));
+        headers.put("Host", List.of(input.getHost()));
+        headers.put("x-amz-date", List.of(timestamp));
 
         //所有key小写排序，分号分割，拼在一起
-        String signedHeaders = input.getHeaders().keySet().stream().sorted(Comparators.comparable())
+        String signedHeaders = headers.keySet().stream().sorted(Comparators.comparable())
                 .map(String::toLowerCase).collect(Collectors.joining(";"));
 
-        String canonicalString = canonicalString(input, signedHeaders, hash);
+        String canonicalString = canonicalString(input, headers, signedHeaders, hash);
         String toSign = toSign(timestamp, credentialScope, canonicalString);
 
         byte[] signatureKey = signatureKey(secretKey, timestamp);
         String signature = EncryptUtils.hex(EncryptUtils.hmacSHA256(toSign, signatureKey));
         String authorization = String.format("AWS4-HMAC-SHA256 Credential=%s/%s,SignedHeaders=%s,Signature=%s"
                 , accessKey, credentialScope, signedHeaders, signature);
-        input.getHeaders().put("Authorization", List.of(authorization));
+        headers.put("Authorization", List.of(authorization));
         return headers;
     }
 

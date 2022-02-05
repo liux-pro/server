@@ -27,7 +27,7 @@ liux-pro:
     secret-key: 123456789
     service: s3
     region: myregion
-    endpoint: http://localhost:9000
+    endpoint: localhost:9000
     bucket: liux-pro
     cdn-host: localhost:9000/liux-pro
     protocol: http

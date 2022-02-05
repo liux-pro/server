@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import pro.liux.web.client.S3Client;
 import pro.liux.web.service.BlogService;
 import pro.liux.web.service.TestService;
 import pro.liux.web.utils.UUID;
@@ -22,8 +21,6 @@ public class ArticleController {
     @Autowired
     TestService testService;
 
-    @Autowired
-    S3Client s3Client;
 
     @Autowired
     BlogService blogService;
