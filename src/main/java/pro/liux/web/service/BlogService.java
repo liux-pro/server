@@ -1,10 +1,6 @@
 package pro.liux.web.service;
 
 import org.springframework.web.multipart.MultipartFile;
-import pro.liux.web.utils.EncryptUtils;
-
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 
 public interface BlogService {
     /**
