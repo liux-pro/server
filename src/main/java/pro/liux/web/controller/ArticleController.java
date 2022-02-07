@@ -4,14 +4,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import pro.liux.web.mapper.ArticleMapper;
 import pro.liux.web.service.BlogService;
 import pro.liux.web.service.TestService;
 import pro.liux.web.utils.UUID;
+import pro.liux.web.vo.Article;
 import pro.liux.web.vo.Result;
 import pro.liux.web.vo.VditorImage;
 import pro.liux.web.vo.VditorImageConvert;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Map;
 
@@ -22,6 +25,8 @@ public class ArticleController {
     TestService testService;
 
 
+    @Autowired
+    ArticleMapper articleMapper;
     @Autowired
     BlogService blogService;
 
@@ -65,4 +70,20 @@ public class ArticleController {
     }
 
 
+    /**
+     * vditor 上传文件
+     *
+     * @param article 文章
+     */
+    @PostMapping("article/{id}")
+    public Result articleSave(@RequestBody Article article,@PathVariable("id") Integer id) {
+        article.setId(id);
+        LocalDateTime now = LocalDateTime.now();
+        article.setGmtCreate(now);
+        article.setGmtModified(now);
+        int insert = articleMapper.insert(article);
+        System.out.println(insert);
+        Result result = Result.success(article);
+        return result;
+    }
 }

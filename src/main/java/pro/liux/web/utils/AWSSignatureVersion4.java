@@ -16,13 +16,13 @@ package pro.liux.web.utils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import org.bouncycastle.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
 import org.springframework.util.comparator.Comparators;
 import pro.liux.web.config.property.OSS;
 
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -157,7 +157,7 @@ public class AWSSignatureVersion4 {
     }
 
     byte[] signatureKey(String secretKey, String timestamp) {
-        byte[] kSecret = Strings.toByteArray("AWS4" + secretKey);
+        byte[] kSecret = ("AWS4" + secretKey).getBytes(StandardCharsets.UTF_8);
         byte[] kDate = EncryptUtils.hmacSHA256(timestamp.substring(0, 8), kSecret);
         byte[] kRegion = EncryptUtils.hmacSHA256(region, kDate);
         byte[] kService = EncryptUtils.hmacSHA256(service, kRegion);

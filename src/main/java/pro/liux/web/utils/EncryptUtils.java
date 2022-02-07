@@ -1,9 +1,11 @@
 package pro.liux.web.utils;
 
-import org.bouncycastle.util.Strings;
+
+import org.apache.logging.log4j.util.Strings;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 
 
@@ -11,7 +13,7 @@ public class EncryptUtils {
     public static byte[] sha256(String data) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            return digest.digest(Strings.toUTF8ByteArray(data));
+            return digest.digest(data.getBytes(StandardCharsets.UTF_8));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -29,7 +31,7 @@ public class EncryptUtils {
     public static byte[] sha1(String data) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-1");
-            return digest.digest(Strings.toUTF8ByteArray(data));
+            return digest.digest(data.getBytes(StandardCharsets.UTF_8));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -57,7 +59,7 @@ public class EncryptUtils {
             String algorithm = "HmacSHA256";
             Mac mac = Mac.getInstance(algorithm);
             mac.init(new SecretKeySpec(key, algorithm));
-            return mac.doFinal(Strings.toUTF8ByteArray(data));
+            return mac.doFinal(data.getBytes(StandardCharsets.UTF_8));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -68,7 +70,7 @@ public class EncryptUtils {
             String algorithm = "HmacSHA1";
             Mac mac = Mac.getInstance(algorithm);
             mac.init(new SecretKeySpec(key, algorithm));
-            return mac.doFinal(Strings.toUTF8ByteArray(data));
+            return mac.doFinal(data.getBytes(StandardCharsets.UTF_8));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
