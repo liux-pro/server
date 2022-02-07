@@ -1,45 +1,35 @@
 package pro.liux.web.service;
 
-import org.springframework.stereotype.Service;
-import pro.liux.web.mapper.ArticleMapper;
 import pro.liux.web.model.Article;
 
-import javax.annotation.Resource;
+import java.util.List;
 
-@Service
-public class ArticleService {
-
-    @Resource
-    private ArticleMapper articleMapper;
+public interface ArticleService {
 
 
-    public int deleteByPrimaryKey(Long id) {
-        return articleMapper.deleteByPrimaryKey(id);
-    }
+    int deleteByPrimaryKey(Long id);
 
+    int insert(Article record);
 
-    public int insert(Article record) {
-        return articleMapper.insert(record);
-    }
+    int insertOrUpdate(Article record);
 
+    int insertOrUpdateSelective(Article record);
 
-    public int insertSelective(Article record) {
-        return articleMapper.insertSelective(record);
-    }
+    int insertSelective(Article record);
 
+    Article selectByPrimaryKey(Long id);
 
-    public Article selectByPrimaryKey(Long id) {
-        return articleMapper.selectByPrimaryKey(id);
-    }
+    int updateByPrimaryKeySelective(Article record);
 
+    int updateByPrimaryKey(Article record);
 
-    public int updateByPrimaryKeySelective(Article record) {
-        return articleMapper.updateByPrimaryKeySelective(record);
-    }
+    int updateBatch(List<Article> list);
 
+    int updateBatchSelective(List<Article> list);
 
-    public int updateByPrimaryKey(Article record) {
-        return articleMapper.updateByPrimaryKey(record);
-    }
+    int batchInsert(List<Article> list);
 
 }
+
+
+

@@ -76,7 +76,7 @@ public class ArticleController {
      * @param article 文章
      */
     @PostMapping("article/{id}")
-    public Result articleSave(@RequestBody Article article, @PathVariable("id") Integer id) {
+    public Result articleSave(@RequestBody Article article, @PathVariable("id") Long id) {
         article.setId(id);
         LocalDateTime now = LocalDateTime.now();
         article.setGmtCreate(now);

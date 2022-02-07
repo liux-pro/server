@@ -1,8 +1,10 @@
 package pro.liux.web.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Param;
 import pro.liux.web.model.Article;
+
+import java.util.List;
 
 @Mapper
 public interface ArticleMapper {
@@ -21,6 +23,10 @@ public interface ArticleMapper {
      * @return insert count
      */
     int insert(Article record);
+
+    int insertOrUpdate(Article record);
+
+    int insertOrUpdateSelective(Article record);
 
     /**
      * insert record to table selective
@@ -54,6 +60,9 @@ public interface ArticleMapper {
      */
     int updateByPrimaryKey(Article record);
 
-    @Select("select * from article where id = #{id}")
-    Article selectById(Integer id);
+    int updateBatch(List<Article> list);
+
+    int updateBatchSelective(List<Article> list);
+
+    int batchInsert(@Param("list") List<Article> list);
 }

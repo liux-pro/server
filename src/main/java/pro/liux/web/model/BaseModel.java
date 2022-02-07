@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 @Data
 public class BaseModel {
-    private Integer id;
+    private Long id;
     private LocalDateTime gmtCreate;
     private LocalDateTime gmtModified;
 }

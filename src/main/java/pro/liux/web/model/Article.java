@@ -3,8 +3,8 @@ package pro.liux.web.model;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-@EqualsAndHashCode(callSuper = false)
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class Article extends BaseModel {
     private String title;
 
