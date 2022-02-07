@@ -1,8 +1,6 @@
 package pro.liux.web.utils;
 
 
-import org.apache.logging.log4j.util.Strings;
-
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;

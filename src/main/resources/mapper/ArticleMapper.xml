@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pro.liux.web.mapper.ArticleMapper">
+    <resultMap id="BaseResultMap" type="pro.liux.web.model.Article">
+        <!--@mbg.generated-->
+        <!--@Table liux_pro.article-->
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="title" jdbcType="LONGVARCHAR" property="title"/>
+        <result column="content" jdbcType="LONGVARCHAR" property="content"/>
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, title, content, gmt_create, gmt_modified
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+        select
+        <include refid="Base_Column_List"/>
+        from liux_pro.article
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        <!--@mbg.generated-->
+        delete from liux_pro.article
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="pro.liux.web.model.Article"
+            useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into liux_pro.article (title, content, gmt_create,
+        gmt_modified)
+        values (#{title,jdbcType=LONGVARCHAR}, #{content,jdbcType=LONGVARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP},
+        #{gmtModified,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="pro.liux.web.model.Article"
+            useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into liux_pro.article
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null">
+                title,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+            <if test="gmtCreate != null">
+                gmt_create,
+            </if>
+            <if test="gmtModified != null">
+                gmt_modified,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null">
+                #{title,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="gmtCreate != null">
+                #{gmtCreate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="gmtModified != null">
+                #{gmtModified,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="pro.liux.web.model.Article">
+        <!--@mbg.generated-->
+        update liux_pro.article
+        <set>
+            <if test="title != null">
+                title = #{title,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="content != null">
+                content = #{content,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="gmtCreate != null">
+                gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="gmtModified != null">
+                gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="pro.liux.web.model.Article">
+        <!--@mbg.generated-->
+        update liux_pro.article
+        set title = #{title,jdbcType=LONGVARCHAR},
+        content = #{content,jdbcType=LONGVARCHAR},
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+</mapper>

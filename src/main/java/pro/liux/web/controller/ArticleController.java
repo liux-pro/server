@@ -5,10 +5,10 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pro.liux.web.mapper.ArticleMapper;
+import pro.liux.web.model.Article;
 import pro.liux.web.service.BlogService;
 import pro.liux.web.service.TestService;
 import pro.liux.web.utils.UUID;
-import pro.liux.web.vo.Article;
 import pro.liux.web.vo.Result;
 import pro.liux.web.vo.VditorImage;
 import pro.liux.web.vo.VditorImageConvert;
@@ -76,7 +76,7 @@ public class ArticleController {
      * @param article 文章
      */
     @PostMapping("article/{id}")
-    public Result articleSave(@RequestBody Article article,@PathVariable("id") Integer id) {
+    public Result articleSave(@RequestBody Article article, @PathVariable("id") Integer id) {
         article.setId(id);
         LocalDateTime now = LocalDateTime.now();
         article.setGmtCreate(now);
