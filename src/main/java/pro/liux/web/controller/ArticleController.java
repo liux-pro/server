@@ -71,7 +71,7 @@ public class ArticleController {
 
 
     /**
-     * vditor 上传文件
+     * vditor 上传文章
      *
      * @param article 文章
      */
@@ -83,6 +83,13 @@ public class ArticleController {
         article.setGmtModified(now);
         int insert = articleMapper.insert(article);
         System.out.println(insert);
+        Result result = Result.success(article);
+        return result;
+    }
+
+    @GetMapping("article/{id}")
+    public Result articleGet(@PathVariable("id") Long id) {
+        Article article = articleMapper.selectByPrimaryKey(id);
         Result result = Result.success(article);
         return result;
     }
