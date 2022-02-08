@@ -1,1 +1,1 @@
-mvn -Pnative -Phuawei-repo -DskipTests clean package
+mvn -ntp -Pnative -Phuawei-repo -DskipTests clean package
