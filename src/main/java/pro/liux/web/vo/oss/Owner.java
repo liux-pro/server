@@ -1,7 +1,7 @@
 /**
  * Copyright 2022 bejson.com
  */
-package pro.liux.web.vo.s3;
+package pro.liux.web.vo.oss;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import lombok.Data;

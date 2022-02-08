@@ -14,7 +14,7 @@ import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Component;
 import pro.liux.web.config.property.OSS;
 import pro.liux.web.utils.AWSSignatureVersion4;
-import pro.liux.web.vo.s3.ListBucketResult;
+import pro.liux.web.vo.oss.ListBucketResult;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;

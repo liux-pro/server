@@ -1,5 +1,6 @@
-package pro.liux.web.vo.s3;
+package pro.liux.web.vo.oss;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import lombok.Data;
@@ -29,6 +30,7 @@ public class ListBucketResult {
 
     @JacksonXmlProperty(localName = "Contents")
     @JacksonXmlElementWrapper(useWrapping = false)
+    @JsonInclude()
     private List<Contents> Contents;
 
 }

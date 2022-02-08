@@ -10,7 +10,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import pro.liux.web.client.OssClient;
 import pro.liux.web.service.BlogService;
-import pro.liux.web.vo.s3.ListBucketResult;
+import pro.liux.web.vo.oss.ListBucketResult;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
