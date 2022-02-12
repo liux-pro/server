@@ -2,6 +2,7 @@ package pro.liux.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pro.liux.web.mapper.ArticleMapper;
@@ -76,7 +77,7 @@ public class ArticleController {
      * @param article 文章
      */
     @PostMapping("article/{id}")
-    public Result articleSave(@RequestBody Article article, @PathVariable("id") Long id) {
+    public Result articleSave(@RequestBody @Validated Article article, @PathVariable("id") Long id) {
         article.setId(id);
         LocalDateTime now = LocalDateTime.now();
         article.setGmtCreate(now);

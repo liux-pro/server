@@ -5,6 +5,7 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.util.Arrays;
 
 
 public class EncryptUtils {
@@ -72,5 +73,10 @@ public class EncryptUtils {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static void main(String[] args) {
+        String aa = "The quick brown fox jumps over the lazy dog";
+        System.out.println("sha256(aa) = " + hex(sha256(aa)));
     }
 }
