@@ -75,8 +75,8 @@ public class EncryptUtils {
         }
     }
 
-    public static void main(String[] args) {
-        String aa = "The quick brown fox jumps over the lazy dog";
-        System.out.println("sha256(aa) = " + hex(sha256(aa)));
-    }
+//    public static void main(String[] args) {
+//        String aa = "The quick brown fox jumps over the lazy dog";
+//        System.out.println("sha256(aa) = " + hex(sha256(aa)));
+//    }
 }
