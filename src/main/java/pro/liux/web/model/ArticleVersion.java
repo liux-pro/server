@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class Article extends BaseModel {
+public class ArticleVersion extends BaseModel {
     private String title;
 
     private String content;

@@ -3,10 +3,10 @@ package pro.liux.web.mapper;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import pro.liux.web.model.Article;
+import pro.liux.web.model.ArticleVersion;
 
 @Mapper
-public interface ArticleMapper {
+public interface ArticleVersionMapper {
     /**
      * delete by primary key
      *
@@ -21,11 +21,11 @@ public interface ArticleMapper {
      * @param record the record
      * @return insert count
      */
-    int insert(Article record);
+    int insert(ArticleVersion record);
 
-    int insertOrUpdate(Article record);
+    int insertOrUpdate(ArticleVersion record);
 
-    int insertOrUpdateSelective(Article record);
+    int insertOrUpdateSelective(ArticleVersion record);
 
     /**
      * insert record to table selective
@@ -33,7 +33,7 @@ public interface ArticleMapper {
      * @param record the record
      * @return insert count
      */
-    int insertSelective(Article record);
+    int insertSelective(ArticleVersion record);
 
     /**
      * select by primary key
@@ -41,7 +41,7 @@ public interface ArticleMapper {
      * @param id primary key
      * @return object by primary key
      */
-    Article selectByPrimaryKey(Long id);
+    ArticleVersion selectByPrimaryKey(Long id);
 
     /**
      * update record selective
@@ -49,7 +49,7 @@ public interface ArticleMapper {
      * @param record the updated record
      * @return update count
      */
-    int updateByPrimaryKeySelective(Article record);
+    int updateByPrimaryKeySelective(ArticleVersion record);
 
     /**
      * update record
@@ -57,11 +57,11 @@ public interface ArticleMapper {
      * @param record the updated record
      * @return update count
      */
-    int updateByPrimaryKey(Article record);
+    int updateByPrimaryKey(ArticleVersion record);
 
-    int updateBatch(List<Article> list);
+    int updateBatch(List<ArticleVersion> list);
 
-    int updateBatchSelective(List<Article> list);
+    int updateBatchSelective(List<ArticleVersion> list);
 
-    int batchInsert(@Param("list") List<Article> list);
+    int batchInsert(@Param("list") List<ArticleVersion> list);
 }
