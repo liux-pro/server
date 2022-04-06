@@ -5,6 +5,7 @@
     <!--@mbg.generated-->
     <!--@Table liux_pro.article_version-->
     <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="article_id" jdbcType="BIGINT" property="articleId" />
     <result column="title" jdbcType="LONGVARCHAR" property="title" />
     <result column="content" jdbcType="LONGVARCHAR" property="content" />
     <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
@@ -12,7 +13,7 @@
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, title, content, gmt_create, gmt_modified
+    id, article_id, title, content, gmt_create, gmt_modified
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     <!--@mbg.generated-->
@@ -28,15 +29,18 @@
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="pro.liux.web.model.ArticleVersion" useGeneratedKeys="true">
     <!--@mbg.generated-->
-    insert into liux_pro.article_version (title, content, gmt_create, 
-      gmt_modified)
-    values (#{title,jdbcType=LONGVARCHAR}, #{content,jdbcType=LONGVARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+    insert into liux_pro.article_version (article_id, title, content, 
+      gmt_create, gmt_modified)
+    values (#{articleId,jdbcType=BIGINT}, #{title,jdbcType=LONGVARCHAR}, #{content,jdbcType=LONGVARCHAR}, 
+      #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="pro.liux.web.model.ArticleVersion" useGeneratedKeys="true">
     <!--@mbg.generated-->
     insert into liux_pro.article_version
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="articleId != null">
+        article_id,
+      </if>
       <if test="title != null">
         title,
       </if>
@@ -51,6 +55,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="articleId != null">
+        #{articleId,jdbcType=BIGINT},
+      </if>
       <if test="title != null">
         #{title,jdbcType=LONGVARCHAR},
       </if>
@@ -69,6 +76,9 @@
     <!--@mbg.generated-->
     update liux_pro.article_version
     <set>
+      <if test="articleId != null">
+        article_id = #{articleId,jdbcType=BIGINT},
+      </if>
       <if test="title != null">
         title = #{title,jdbcType=LONGVARCHAR},
       </if>
@@ -87,7 +97,8 @@
   <update id="updateByPrimaryKey" parameterType="pro.liux.web.model.ArticleVersion">
     <!--@mbg.generated-->
     update liux_pro.article_version
-    set title = #{title,jdbcType=LONGVARCHAR},
+    set article_id = #{articleId,jdbcType=BIGINT},
+      title = #{title,jdbcType=LONGVARCHAR},
       content = #{content,jdbcType=LONGVARCHAR},
       gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
@@ -97,6 +108,11 @@
     <!--@mbg.generated-->
     update liux_pro.article_version
     <trim prefix="set" suffixOverrides=",">
+      <trim prefix="article_id = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when id = #{item.id,jdbcType=BIGINT} then #{item.articleId,jdbcType=BIGINT}
+        </foreach>
+      </trim>
       <trim prefix="title = case" suffix="end,">
         <foreach collection="list" index="index" item="item">
           when id = #{item.id,jdbcType=BIGINT} then #{item.title,jdbcType=LONGVARCHAR}
@@ -127,6 +143,13 @@
     <!--@mbg.generated-->
     update liux_pro.article_version
     <trim prefix="set" suffixOverrides=",">
+      <trim prefix="article_id = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          <if test="item.articleId != null">
+            when id = #{item.id,jdbcType=BIGINT} then #{item.articleId,jdbcType=BIGINT}
+          </if>
+        </foreach>
+      </trim>
       <trim prefix="title = case" suffix="end,">
         <foreach collection="list" index="index" item="item">
           <if test="item.title != null">
@@ -164,11 +187,11 @@
   <insert id="batchInsert" keyColumn="id" keyProperty="id" parameterType="map" useGeneratedKeys="true">
     <!--@mbg.generated-->
     insert into liux_pro.article_version
-    (title, content, gmt_create, gmt_modified)
+    (article_id, title, content, gmt_create, gmt_modified)
     values
     <foreach collection="list" item="item" separator=",">
-      (#{item.title,jdbcType=LONGVARCHAR}, #{item.content,jdbcType=LONGVARCHAR}, #{item.gmtCreate,jdbcType=TIMESTAMP}, 
-        #{item.gmtModified,jdbcType=TIMESTAMP})
+      (#{item.articleId,jdbcType=BIGINT}, #{item.title,jdbcType=LONGVARCHAR}, #{item.content,jdbcType=LONGVARCHAR}, 
+        #{item.gmtCreate,jdbcType=TIMESTAMP}, #{item.gmtModified,jdbcType=TIMESTAMP})
     </foreach>
   </insert>
   <insert id="insertOrUpdate" keyColumn="id" keyProperty="id" parameterType="pro.liux.web.model.ArticleVersion" useGeneratedKeys="true">
@@ -178,6 +201,7 @@
       <if test="id != null">
         id,
       </if>
+      article_id,
       title,
       content,
       gmt_create,
@@ -188,6 +212,7 @@
       <if test="id != null">
         #{id,jdbcType=BIGINT},
       </if>
+      #{articleId,jdbcType=BIGINT},
       #{title,jdbcType=LONGVARCHAR},
       #{content,jdbcType=LONGVARCHAR},
       #{gmtCreate,jdbcType=TIMESTAMP},
@@ -198,6 +223,7 @@
       <if test="id != null">
         id = #{id,jdbcType=BIGINT},
       </if>
+      article_id = #{articleId,jdbcType=BIGINT},
       title = #{title,jdbcType=LONGVARCHAR},
       content = #{content,jdbcType=LONGVARCHAR},
       gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
@@ -210,6 +236,9 @@
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
+      </if>
+      <if test="articleId != null">
+        article_id,
       </if>
       <if test="title != null">
         title,
@@ -229,6 +258,9 @@
       <if test="id != null">
         #{id,jdbcType=BIGINT},
       </if>
+      <if test="articleId != null">
+        #{articleId,jdbcType=BIGINT},
+      </if>
       <if test="title != null">
         #{title,jdbcType=LONGVARCHAR},
       </if>
@@ -246,6 +278,9 @@
     <trim suffixOverrides=",">
       <if test="id != null">
         id = #{id,jdbcType=BIGINT},
+      </if>
+      <if test="articleId != null">
+        article_id = #{articleId,jdbcType=BIGINT},
       </if>
       <if test="title != null">
         title = #{title,jdbcType=LONGVARCHAR},

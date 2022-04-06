@@ -30,14 +30,14 @@ public class BlogServiceImpl implements BlogService {
 
 
     @Override
-    public String uploadImg(String fileKey, byte[] image) {
+    public String uploadFile(String fileKey, byte[] image) {
 //        s3Client.put(fileKey, image);
         ossClient.put(fileKey, image);
         return getOssDirectLink(fileKey);
     }
 
     @Override
-    public String uploadImg(MultipartFile file) {
+    public String uploadFile(MultipartFile file) {
         String uuid = UUID.getUUID();
 
 

@@ -18,7 +18,7 @@ public interface BlogService {
      * @param image   图片字节
      * @return url
      */
-    String uploadImg(String fileKey, byte[] image);
+    String uploadFile(String fileKey, byte[] image);
 
     /**
      * 上传文件到oss，返回链接
@@ -26,7 +26,7 @@ public interface BlogService {
      * @param file
      * @return
      */
-    String uploadImg(MultipartFile file);
+    String uploadFile(MultipartFile file);
 
     /**
      * 生成文件直链

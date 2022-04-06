@@ -2,11 +2,13 @@ package pro.liux.web.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.nativex.hint.TypeHint;
-import pro.liux.web.vo.VditorImage;
-import pro.liux.web.vo.VditorImageConvert;
 
 
+/**
+ * 把用到的实体类写到types里
+ * 否则spring-native会报错
+ */
 @Configuration
-@TypeHint(types = {VditorImage.class, VditorImageConvert.class})
+@TypeHint(types = {})
 public class SpringNativeBeanConfiguration {
 }
