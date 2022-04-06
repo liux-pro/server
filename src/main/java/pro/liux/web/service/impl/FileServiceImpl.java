@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import pro.liux.web.client.OssClient;
 import pro.liux.web.config.property.OSS;
-import pro.liux.web.service.BlogService;
+import pro.liux.web.service.FileService;
 import pro.liux.web.utils.EncryptUtils;
 import pro.liux.web.utils.UUID;
 
@@ -13,7 +13,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 @Service
-public class BlogServiceImpl implements BlogService {
+public class FileServiceImpl implements FileService {
 
     @Autowired
     OssClient ossClient;

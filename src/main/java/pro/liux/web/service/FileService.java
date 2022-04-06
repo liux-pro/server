@@ -2,7 +2,7 @@ package pro.liux.web.service;
 
 import org.springframework.web.multipart.MultipartFile;
 
-public interface BlogService {
+public interface FileService {
     /**
      * 下载远程图片，下载到本地并且上传到oss
      *

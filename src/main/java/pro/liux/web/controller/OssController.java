@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import pro.liux.web.client.OssClient;
-import pro.liux.web.service.BlogService;
+import pro.liux.web.service.FileService;
 import pro.liux.web.vo.oss.ListBucketResult;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,7 +26,7 @@ public class OssController {
 //    S3Client s3Client;
 
     @Autowired
-    BlogService blogService;
+    FileService fileService;
 
     @Autowired
     OssClient ossClient;
@@ -76,7 +76,7 @@ public class OssController {
     @PostMapping("ossAuth")
     public void redirectOss(@RequestParam("url") String url, HttpServletResponse response) throws IOException {
 //        String directLink = blogService.getOssDirectLink(url);
-        String authedUrl = blogService.getAuthedUrl(url, 1000);
+        String authedUrl = fileService.getAuthedUrl(url, 1000);
         System.out.println(authedUrl);
         response.sendRedirect(authedUrl);
     }

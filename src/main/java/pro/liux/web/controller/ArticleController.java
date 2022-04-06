@@ -1,21 +1,15 @@
 package pro.liux.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import pro.liux.web.mapper.ArticleMapper;
 import pro.liux.web.model.Article;
-import pro.liux.web.service.BlogService;
+import pro.liux.web.service.FileService;
 import pro.liux.web.service.TestService;
-import pro.liux.web.utils.UUID;
 import pro.liux.web.vo.Result;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.Map;
 
 @RestController
 @CrossOrigin
@@ -27,7 +21,7 @@ public class ArticleController {
     @Autowired
     ArticleMapper articleMapper;
     @Autowired
-    BlogService blogService;
+    FileService fileService;
 
     /**
      * vditor 上传文章
