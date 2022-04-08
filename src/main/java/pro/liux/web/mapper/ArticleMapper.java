@@ -4,9 +4,14 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import pro.liux.web.model.Article;
+import pro.liux.web.model.ArticleExample;
 
 @Mapper
 public interface ArticleMapper {
+    long countByExample(ArticleExample example);
+
+    int deleteByExample(ArticleExample example);
+
     /**
      * delete by primary key
      *
@@ -35,6 +40,8 @@ public interface ArticleMapper {
      */
     int insertSelective(Article record);
 
+    List<Article> selectByExample(ArticleExample example);
+
     /**
      * select by primary key
      *
@@ -42,6 +49,10 @@ public interface ArticleMapper {
      * @return object by primary key
      */
     Article selectByPrimaryKey(Long id);
+
+    int updateByExampleSelective(@Param("record") Article record, @Param("example") ArticleExample example);
+
+    int updateByExample(@Param("record") Article record, @Param("example") ArticleExample example);
 
     /**
      * update record selective
@@ -61,7 +72,9 @@ public interface ArticleMapper {
 
     int updateBatch(List<Article> list);
 
-    int updateBatchSelective(List<Article> list);
-
     int batchInsert(@Param("list") List<Article> list);
+
+    List<Article> selectArticleList(Article article);
+
+    int updateBatchSelective(List<Article> list);
 }

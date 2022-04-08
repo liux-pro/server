@@ -5,15 +5,92 @@
     <!--@mbg.generated-->
     <!--@Table liux_pro.article-->
     <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="article_version_id" jdbcType="BIGINT" property="articleVersionId" />
     <result column="title" jdbcType="LONGVARCHAR" property="title" />
-    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+    <result column="main_content" jdbcType="LONGVARCHAR" property="mainContent" />
     <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate" />
     <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+    <result column="is_delete" jdbcType="BOOLEAN" property="isDelete" />
   </resultMap>
+  <sql id="Example_Where_Clause">
+    <!--@mbg.generated-->
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <!--@mbg.generated-->
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, title, content, gmt_create, gmt_modified
+    id, article_version_id, title, main_content, gmt_create, gmt_modified, is_delete
   </sql>
+  <select id="selectByExample" parameterType="pro.liux.web.model.ArticleExample" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from liux_pro.article
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     <!--@mbg.generated-->
     select 
@@ -26,22 +103,37 @@
     delete from liux_pro.article
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="pro.liux.web.model.Article" useGeneratedKeys="true">
+  <delete id="deleteByExample" parameterType="pro.liux.web.model.ArticleExample">
     <!--@mbg.generated-->
-    insert into liux_pro.article (title, content, gmt_create, 
-      gmt_modified)
-    values (#{title,jdbcType=LONGVARCHAR}, #{content,jdbcType=LONGVARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+    delete from liux_pro.article
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="pro.liux.web.model.Article">
+    <!--@mbg.generated-->
+    insert into liux_pro.article (id, article_version_id, title, 
+      main_content, gmt_create, gmt_modified, 
+      is_delete)
+    values (#{id,jdbcType=BIGINT}, #{articleVersionId,jdbcType=BIGINT}, #{title,jdbcType=LONGVARCHAR}, 
+      #{mainContent,jdbcType=LONGVARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
+      #{isDelete,jdbcType=BOOLEAN})
   </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="pro.liux.web.model.Article" useGeneratedKeys="true">
+  <insert id="insertSelective" parameterType="pro.liux.web.model.Article">
     <!--@mbg.generated-->
     insert into liux_pro.article
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="articleVersionId != null">
+        article_version_id,
+      </if>
       <if test="title != null">
         title,
       </if>
-      <if test="content != null">
-        content,
+      <if test="mainContent != null">
+        main_content,
       </if>
       <if test="gmtCreate != null">
         gmt_create,
@@ -49,13 +141,22 @@
       <if test="gmtModified != null">
         gmt_modified,
       </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="articleVersionId != null">
+        #{articleVersionId,jdbcType=BIGINT},
+      </if>
       <if test="title != null">
         #{title,jdbcType=LONGVARCHAR},
       </if>
-      <if test="content != null">
-        #{content,jdbcType=LONGVARCHAR},
+      <if test="mainContent != null">
+        #{mainContent,jdbcType=LONGVARCHAR},
       </if>
       <if test="gmtCreate != null">
         #{gmtCreate,jdbcType=TIMESTAMP},
@@ -63,17 +164,74 @@
       <if test="gmtModified != null">
         #{gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=BOOLEAN},
+      </if>
     </trim>
   </insert>
+  <select id="countByExample" parameterType="pro.liux.web.model.ArticleExample" resultType="java.lang.Long">
+    <!--@mbg.generated-->
+    select count(*) from liux_pro.article
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    <!--@mbg.generated-->
+    update liux_pro.article
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.articleVersionId != null">
+        article_version_id = #{record.articleVersionId,jdbcType=BIGINT},
+      </if>
+      <if test="record.title != null">
+        title = #{record.title,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.mainContent != null">
+        main_content = #{record.mainContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.gmtCreate != null">
+        gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null">
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isDelete != null">
+        is_delete = #{record.isDelete,jdbcType=BOOLEAN},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    <!--@mbg.generated-->
+    update liux_pro.article
+    set id = #{record.id,jdbcType=BIGINT},
+      article_version_id = #{record.articleVersionId,jdbcType=BIGINT},
+      title = #{record.title,jdbcType=LONGVARCHAR},
+      main_content = #{record.mainContent,jdbcType=LONGVARCHAR},
+      gmt_create = #{record.gmtCreate,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      is_delete = #{record.isDelete,jdbcType=BOOLEAN}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
   <update id="updateByPrimaryKeySelective" parameterType="pro.liux.web.model.Article">
     <!--@mbg.generated-->
     update liux_pro.article
     <set>
+      <if test="articleVersionId != null">
+        article_version_id = #{articleVersionId,jdbcType=BIGINT},
+      </if>
       <if test="title != null">
         title = #{title,jdbcType=LONGVARCHAR},
       </if>
-      <if test="content != null">
-        content = #{content,jdbcType=LONGVARCHAR},
+      <if test="mainContent != null">
+        main_content = #{mainContent,jdbcType=LONGVARCHAR},
       </if>
       <if test="gmtCreate != null">
         gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
@@ -81,30 +239,40 @@
       <if test="gmtModified != null">
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=BOOLEAN},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="pro.liux.web.model.Article">
     <!--@mbg.generated-->
     update liux_pro.article
-    set title = #{title,jdbcType=LONGVARCHAR},
-      content = #{content,jdbcType=LONGVARCHAR},
+    set article_version_id = #{articleVersionId,jdbcType=BIGINT},
+      title = #{title,jdbcType=LONGVARCHAR},
+      main_content = #{mainContent,jdbcType=LONGVARCHAR},
       gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      is_delete = #{isDelete,jdbcType=BOOLEAN}
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateBatch" parameterType="java.util.List">
     <!--@mbg.generated-->
     update liux_pro.article
     <trim prefix="set" suffixOverrides=",">
+      <trim prefix="article_version_id = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when id = #{item.id,jdbcType=BIGINT} then #{item.articleVersionId,jdbcType=BIGINT}
+        </foreach>
+      </trim>
       <trim prefix="title = case" suffix="end,">
         <foreach collection="list" index="index" item="item">
           when id = #{item.id,jdbcType=BIGINT} then #{item.title,jdbcType=LONGVARCHAR}
         </foreach>
       </trim>
-      <trim prefix="content = case" suffix="end,">
+      <trim prefix="main_content = case" suffix="end,">
         <foreach collection="list" index="index" item="item">
-          when id = #{item.id,jdbcType=BIGINT} then #{item.content,jdbcType=LONGVARCHAR}
+          when id = #{item.id,jdbcType=BIGINT} then #{item.mainContent,jdbcType=LONGVARCHAR}
         </foreach>
       </trim>
       <trim prefix="gmt_create = case" suffix="end,">
@@ -117,42 +285,9 @@
           when id = #{item.id,jdbcType=BIGINT} then #{item.gmtModified,jdbcType=TIMESTAMP}
         </foreach>
       </trim>
-    </trim>
-    where id in
-    <foreach close=")" collection="list" item="item" open="(" separator=", ">
-      #{item.id,jdbcType=BIGINT}
-    </foreach>
-  </update>
-  <update id="updateBatchSelective" parameterType="java.util.List">
-    <!--@mbg.generated-->
-    update liux_pro.article
-    <trim prefix="set" suffixOverrides=",">
-      <trim prefix="title = case" suffix="end,">
+      <trim prefix="is_delete = case" suffix="end,">
         <foreach collection="list" index="index" item="item">
-          <if test="item.title != null">
-            when id = #{item.id,jdbcType=BIGINT} then #{item.title,jdbcType=LONGVARCHAR}
-          </if>
-        </foreach>
-      </trim>
-      <trim prefix="content = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          <if test="item.content != null">
-            when id = #{item.id,jdbcType=BIGINT} then #{item.content,jdbcType=LONGVARCHAR}
-          </if>
-        </foreach>
-      </trim>
-      <trim prefix="gmt_create = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          <if test="item.gmtCreate != null">
-            when id = #{item.id,jdbcType=BIGINT} then #{item.gmtCreate,jdbcType=TIMESTAMP}
-          </if>
-        </foreach>
-      </trim>
-      <trim prefix="gmt_modified = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          <if test="item.gmtModified != null">
-            when id = #{item.id,jdbcType=BIGINT} then #{item.gmtModified,jdbcType=TIMESTAMP}
-          </if>
+          when id = #{item.id,jdbcType=BIGINT} then #{item.isDelete,jdbcType=BOOLEAN}
         </foreach>
       </trim>
     </trim>
@@ -161,61 +296,51 @@
       #{item.id,jdbcType=BIGINT}
     </foreach>
   </update>
-  <insert id="batchInsert" keyColumn="id" keyProperty="id" parameterType="map" useGeneratedKeys="true">
+  <insert id="batchInsert" parameterType="map">
     <!--@mbg.generated-->
     insert into liux_pro.article
-    (title, content, gmt_create, gmt_modified)
+    (id, article_version_id, title, main_content, gmt_create, gmt_modified, is_delete
+      )
     values
     <foreach collection="list" item="item" separator=",">
-      (#{item.title,jdbcType=LONGVARCHAR}, #{item.content,jdbcType=LONGVARCHAR}, #{item.gmtCreate,jdbcType=TIMESTAMP}, 
-        #{item.gmtModified,jdbcType=TIMESTAMP})
+      (#{item.id,jdbcType=BIGINT}, #{item.articleVersionId,jdbcType=BIGINT}, #{item.title,jdbcType=LONGVARCHAR}, 
+        #{item.mainContent,jdbcType=LONGVARCHAR}, #{item.gmtCreate,jdbcType=TIMESTAMP}, 
+        #{item.gmtModified,jdbcType=TIMESTAMP}, #{item.isDelete,jdbcType=BOOLEAN})
     </foreach>
   </insert>
-  <insert id="insertOrUpdate" keyColumn="id" keyProperty="id" parameterType="pro.liux.web.model.Article" useGeneratedKeys="true">
+  <insert id="insertOrUpdate" parameterType="pro.liux.web.model.Article">
     <!--@mbg.generated-->
     insert into liux_pro.article
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      title,
-      content,
-      gmt_create,
-      gmt_modified,
-    </trim>
+    (id, article_version_id, title, main_content, gmt_create, gmt_modified, is_delete
+      )
     values
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=BIGINT},
-      </if>
-      #{title,jdbcType=LONGVARCHAR},
-      #{content,jdbcType=LONGVARCHAR},
-      #{gmtCreate,jdbcType=TIMESTAMP},
-      #{gmtModified,jdbcType=TIMESTAMP},
-    </trim>
+    (#{id,jdbcType=BIGINT}, #{articleVersionId,jdbcType=BIGINT}, #{title,jdbcType=LONGVARCHAR}, 
+      #{mainContent,jdbcType=LONGVARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
+      #{isDelete,jdbcType=BOOLEAN})
     on duplicate key update 
-    <trim suffixOverrides=",">
-      <if test="id != null">
-        id = #{id,jdbcType=BIGINT},
-      </if>
-      title = #{title,jdbcType=LONGVARCHAR},
-      content = #{content,jdbcType=LONGVARCHAR},
-      gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
-      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-    </trim>
+    id = #{id,jdbcType=BIGINT}, 
+    article_version_id = #{articleVersionId,jdbcType=BIGINT}, 
+    title = #{title,jdbcType=LONGVARCHAR}, 
+    main_content = #{mainContent,jdbcType=LONGVARCHAR}, 
+    gmt_create = #{gmtCreate,jdbcType=TIMESTAMP}, 
+    gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}, 
+    is_delete = #{isDelete,jdbcType=BOOLEAN}
   </insert>
-  <insert id="insertOrUpdateSelective" keyColumn="id" keyProperty="id" parameterType="pro.liux.web.model.Article" useGeneratedKeys="true">
+  <insert id="insertOrUpdateSelective" parameterType="pro.liux.web.model.Article">
     <!--@mbg.generated-->
     insert into liux_pro.article
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
+      </if>
+      <if test="articleVersionId != null">
+        article_version_id,
       </if>
       <if test="title != null">
         title,
       </if>
-      <if test="content != null">
-        content,
+      <if test="mainContent != null">
+        main_content,
       </if>
       <if test="gmtCreate != null">
         gmt_create,
@@ -223,17 +348,23 @@
       <if test="gmtModified != null">
         gmt_modified,
       </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
     </trim>
     values
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         #{id,jdbcType=BIGINT},
       </if>
+      <if test="articleVersionId != null">
+        #{articleVersionId,jdbcType=BIGINT},
+      </if>
       <if test="title != null">
         #{title,jdbcType=LONGVARCHAR},
       </if>
-      <if test="content != null">
-        #{content,jdbcType=LONGVARCHAR},
+      <if test="mainContent != null">
+        #{mainContent,jdbcType=LONGVARCHAR},
       </if>
       <if test="gmtCreate != null">
         #{gmtCreate,jdbcType=TIMESTAMP},
@@ -241,17 +372,23 @@
       <if test="gmtModified != null">
         #{gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=BOOLEAN},
+      </if>
     </trim>
     on duplicate key update 
     <trim suffixOverrides=",">
       <if test="id != null">
         id = #{id,jdbcType=BIGINT},
       </if>
+      <if test="articleVersionId != null">
+        article_version_id = #{articleVersionId,jdbcType=BIGINT},
+      </if>
       <if test="title != null">
         title = #{title,jdbcType=LONGVARCHAR},
       </if>
-      <if test="content != null">
-        content = #{content,jdbcType=LONGVARCHAR},
+      <if test="mainContent != null">
+        main_content = #{mainContent,jdbcType=LONGVARCHAR},
       </if>
       <if test="gmtCreate != null">
         gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
@@ -259,6 +396,13 @@
       <if test="gmtModified != null">
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=BOOLEAN},
+      </if>
     </trim>
   </insert>
+
+  <select id="selectArticleList" resultMap="BaseResultMap">
+
+    </select>
 </mapper>

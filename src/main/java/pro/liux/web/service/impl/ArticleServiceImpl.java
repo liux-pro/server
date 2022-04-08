@@ -3,6 +3,7 @@ package pro.liux.web.service.impl;
 import org.springframework.stereotype.Service;
 import pro.liux.web.mapper.ArticleMapper;
 import pro.liux.web.model.Article;
+import pro.liux.web.model.ArticleExample;
 import pro.liux.web.service.ArticleService;
 
 import javax.annotation.Resource;
@@ -69,7 +70,36 @@ public class ArticleServiceImpl implements ArticleService {
         return articleMapper.batchInsert(list);
     }
 
+    @Override
+    public long countByExample(ArticleExample example) {
+        return articleMapper.countByExample(example);
+    }
+
+    @Override
+    public int deleteByExample(ArticleExample example) {
+        return articleMapper.deleteByExample(example);
+    }
+
+    @Override
+    public List<Article> selectByExample(ArticleExample example) {
+        return articleMapper.selectByExample(example);
+    }
+
+    @Override
+    public int updateByExampleSelective(Article record, ArticleExample example) {
+        return articleMapper.updateByExampleSelective(record, example);
+    }
+
+    @Override
+    public int updateByExample(Article record, ArticleExample example) {
+        return articleMapper.updateByExample(record, example);
+    }
 }
+
+
+
+
+
 
 
 

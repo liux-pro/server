@@ -1,25 +1,37 @@
 package pro.liux.web.vo;
 
-import lombok.Builder;
 import lombok.Data;
 
 @Data
-@Builder
-public class Result {
+public class Result<E> {
     private Integer code;
     private String msg;
     private Object data;
 
-    public static Result success(Object data) {
-        return Result.builder().code(0).data(data).build();
+    public static <T> Result<T> success(T data) {
+        Result<T> tResult = new Result<T>();
+        tResult.setCode(0);
+        tResult.setData(data);
+        return tResult;
     }
 
-    public static Result fail(int code) {
-        return Result.builder().code(code).build();
+    public static <T> Result<T> fail(int code) {
+        Result<T> tResult = new Result<T>();
+        tResult.setCode(code);
+        return tResult;
     }
 
-    public static Result badRequest() {
-        return Result.builder().code(400).build();
+
+    public static <T> Result<T> badRequest() {
+        Result<T> tResult = new Result<T>();
+        tResult.setCode(400);
+        return tResult;
+    }
+    public static <T> Result<T> badRequest(T msg) {
+        Result<T> tResult = new Result<T>();
+        tResult.setCode(400);
+        tResult.setData(msg);
+        return tResult;
     }
 
 

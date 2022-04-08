@@ -1,7 +1,7 @@
 package pro.liux.web.service;
 
 import java.util.List;
-import pro.liux.web.model.ArticleVersion;
+import pro.liux.web.model.ArticleVersion;import pro.liux.web.model.ArticleVersionExample;
 
 public interface ArticleVersionService {
 
@@ -28,7 +28,18 @@ public interface ArticleVersionService {
 
     int batchInsert(List<ArticleVersion> list);
 
+    long countByExample(ArticleVersionExample example);
+
+    int deleteByExample(ArticleVersionExample example);
+
+    List<ArticleVersion> selectByExample(ArticleVersionExample example);
+
+    int updateByExampleSelective(ArticleVersion record, ArticleVersionExample example);
+
+    int updateByExample(ArticleVersion record, ArticleVersionExample example);
 }
+
+
 
 
 

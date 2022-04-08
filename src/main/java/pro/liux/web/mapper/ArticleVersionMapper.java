@@ -4,9 +4,14 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import pro.liux.web.model.ArticleVersion;
+import pro.liux.web.model.ArticleVersionExample;
 
 @Mapper
 public interface ArticleVersionMapper {
+    long countByExample(ArticleVersionExample example);
+
+    int deleteByExample(ArticleVersionExample example);
+
     /**
      * delete by primary key
      *
@@ -35,6 +40,8 @@ public interface ArticleVersionMapper {
      */
     int insertSelective(ArticleVersion record);
 
+    List<ArticleVersion> selectByExample(ArticleVersionExample example);
+
     /**
      * select by primary key
      *
@@ -42,6 +49,10 @@ public interface ArticleVersionMapper {
      * @return object by primary key
      */
     ArticleVersion selectByPrimaryKey(Long id);
+
+    int updateByExampleSelective(@Param("record") ArticleVersion record, @Param("example") ArticleVersionExample example);
+
+    int updateByExample(@Param("record") ArticleVersion record, @Param("example") ArticleVersionExample example);
 
     /**
      * update record selective

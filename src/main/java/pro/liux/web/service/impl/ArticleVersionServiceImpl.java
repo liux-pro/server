@@ -5,7 +5,7 @@ import javax.annotation.Resource;
 import java.util.List;
 import pro.liux.web.mapper.ArticleVersionMapper;
 import pro.liux.web.model.ArticleVersion;
-import pro.liux.web.service.ArticleVersionService;
+import pro.liux.web.model.ArticleVersionExample;import pro.liux.web.service.ArticleVersionService;
 
 @Service
 public class ArticleVersionServiceImpl implements ArticleVersionService {
@@ -68,7 +68,33 @@ public class ArticleVersionServiceImpl implements ArticleVersionService {
         return articleVersionMapper.batchInsert(list);
     }
 
+    @Override
+    public long countByExample(ArticleVersionExample example) {
+        return articleVersionMapper.countByExample(example);
+    }
+
+    @Override
+    public int deleteByExample(ArticleVersionExample example) {
+        return articleVersionMapper.deleteByExample(example);
+    }
+
+    @Override
+    public List<ArticleVersion> selectByExample(ArticleVersionExample example) {
+        return articleVersionMapper.selectByExample(example);
+    }
+
+    @Override
+    public int updateByExampleSelective(ArticleVersion record, ArticleVersionExample example) {
+        return articleVersionMapper.updateByExampleSelective(record, example);
+    }
+
+    @Override
+    public int updateByExample(ArticleVersion record, ArticleVersionExample example) {
+        return articleVersionMapper.updateByExample(record, example);
+    }
 }
+
+
 
 
 
