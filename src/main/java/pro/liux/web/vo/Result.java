@@ -20,7 +20,17 @@ public class Result<E> {
         tResult.setCode(code);
         return tResult;
     }
-
+    public static <T> Result<T> fail(String msg) {
+        Result<T> tResult = new Result<T>();
+        tResult.setCode(400);
+        tResult.setMsg(msg);
+        return tResult;
+    }
+    public static <T> Result<T> fail() {
+        Result<T> tResult = new Result<T>();
+        tResult.setCode(400);
+        return tResult;
+    }
 
     public static <T> Result<T> badRequest() {
         Result<T> tResult = new Result<T>();

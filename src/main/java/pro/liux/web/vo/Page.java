@@ -9,6 +9,6 @@ public class Page<E> {
     public Page(List<E> list) {
         this.list = list;
     }
-    private Integer total;
+    private Long total;
     private List<E> list;
 }

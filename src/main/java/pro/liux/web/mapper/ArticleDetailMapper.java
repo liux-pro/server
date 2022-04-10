@@ -1,7 +1,7 @@
 package pro.liux.web.mapper;
 
 import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
-import static pro.liux.web.mapper.ArticleVersionDynamicSqlSupport.*;
+import static pro.liux.web.mapper.ArticleDetailDynamicSqlSupport.*;
 
 import java.util.Collection;
 import java.util.List;
@@ -27,16 +27,16 @@ import org.mybatis.dynamic.sql.util.mybatis3.CommonDeleteMapper;
 import org.mybatis.dynamic.sql.util.mybatis3.CommonInsertMapper;
 import org.mybatis.dynamic.sql.util.mybatis3.CommonUpdateMapper;
 import org.mybatis.dynamic.sql.util.mybatis3.MyBatis3Utils;
-import pro.liux.web.model.ArticleVersion;
+import pro.liux.web.model.ArticleDetail;
 
 @Mapper
-public interface ArticleVersionMapper extends CommonCountMapper, CommonDeleteMapper, CommonInsertMapper<ArticleVersion>, CommonUpdateMapper {
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2022-04-08T22:06:54.7710141+08:00", comments="Source Table: article_version")
+public interface ArticleDetailMapper extends CommonCountMapper, CommonDeleteMapper, CommonInsertMapper<ArticleDetail>, CommonUpdateMapper {
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2022-04-11T01:36:21.5288817+08:00", comments="Source Table: article_detail")
     BasicColumn[] selectList = BasicColumn.columnList(id, articleId, gmtCreate, gmtModified, title, content);
 
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2022-04-08T22:06:54.7710141+08:00", comments="Source Table: article_version")
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2022-04-11T01:36:21.5288817+08:00", comments="Source Table: article_detail")
     @SelectProvider(type=SqlProviderAdapter.class, method="select")
-    @Results(id="ArticleVersionResult", value = {
+    @Results(id="ArticleDetailResult", value = {
         @Result(column="id", property="id", jdbcType=JdbcType.BIGINT, id=true),
         @Result(column="article_id", property="articleId", jdbcType=JdbcType.BIGINT),
         @Result(column="gmt_create", property="gmtCreate", jdbcType=JdbcType.TIMESTAMP),
@@ -44,33 +44,33 @@ public interface ArticleVersionMapper extends CommonCountMapper, CommonDeleteMap
         @Result(column="title", property="title", jdbcType=JdbcType.LONGVARCHAR),
         @Result(column="content", property="content", jdbcType=JdbcType.LONGVARCHAR)
     })
-    List<ArticleVersion> selectMany(SelectStatementProvider selectStatement);
+    List<ArticleDetail> selectMany(SelectStatementProvider selectStatement);
 
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2022-04-08T22:06:54.7710141+08:00", comments="Source Table: article_version")
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2022-04-11T01:36:21.5288817+08:00", comments="Source Table: article_detail")
     @SelectProvider(type=SqlProviderAdapter.class, method="select")
-    @ResultMap("ArticleVersionResult")
-    Optional<ArticleVersion> selectOne(SelectStatementProvider selectStatement);
+    @ResultMap("ArticleDetailResult")
+    Optional<ArticleDetail> selectOne(SelectStatementProvider selectStatement);
 
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2022-04-08T22:06:54.7710141+08:00", comments="Source Table: article_version")
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2022-04-11T01:36:21.5288817+08:00", comments="Source Table: article_detail")
     default long count(CountDSLCompleter completer) {
-        return MyBatis3Utils.countFrom(this::count, articleVersion, completer);
+        return MyBatis3Utils.countFrom(this::count, articleDetail, completer);
     }
 
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2022-04-08T22:06:54.7710141+08:00", comments="Source Table: article_version")
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2022-04-11T01:36:21.5288817+08:00", comments="Source Table: article_detail")
     default int delete(DeleteDSLCompleter completer) {
-        return MyBatis3Utils.deleteFrom(this::delete, articleVersion, completer);
+        return MyBatis3Utils.deleteFrom(this::delete, articleDetail, completer);
     }
 
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2022-04-08T22:06:54.7710141+08:00", comments="Source Table: article_version")
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2022-04-11T01:36:21.5288817+08:00", comments="Source Table: article_detail")
     default int deleteByPrimaryKey(Long id_) {
         return delete(c -> 
             c.where(id, isEqualTo(id_))
         );
     }
 
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2022-04-08T22:06:54.7710141+08:00", comments="Source Table: article_version")
-    default int insert(ArticleVersion row) {
-        return MyBatis3Utils.insert(this::insert, row, articleVersion, c ->
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2022-04-11T01:36:21.5288817+08:00", comments="Source Table: article_detail")
+    default int insert(ArticleDetail row) {
+        return MyBatis3Utils.insert(this::insert, row, articleDetail, c ->
             c.map(id).toProperty("id")
             .map(articleId).toProperty("articleId")
             .map(gmtCreate).toProperty("gmtCreate")
@@ -80,9 +80,9 @@ public interface ArticleVersionMapper extends CommonCountMapper, CommonDeleteMap
         );
     }
 
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2022-04-08T22:06:54.7710141+08:00", comments="Source Table: article_version")
-    default int insertMultiple(Collection<ArticleVersion> records) {
-        return MyBatis3Utils.insertMultiple(this::insertMultiple, records, articleVersion, c ->
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2022-04-11T01:36:21.5288817+08:00", comments="Source Table: article_detail")
+    default int insertMultiple(Collection<ArticleDetail> records) {
+        return MyBatis3Utils.insertMultiple(this::insertMultiple, records, articleDetail, c ->
             c.map(id).toProperty("id")
             .map(articleId).toProperty("articleId")
             .map(gmtCreate).toProperty("gmtCreate")
@@ -92,9 +92,9 @@ public interface ArticleVersionMapper extends CommonCountMapper, CommonDeleteMap
         );
     }
 
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2022-04-08T22:06:54.7710141+08:00", comments="Source Table: article_version")
-    default int insertSelective(ArticleVersion row) {
-        return MyBatis3Utils.insert(this::insert, row, articleVersion, c ->
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2022-04-11T01:36:21.5288817+08:00", comments="Source Table: article_detail")
+    default int insertSelective(ArticleDetail row) {
+        return MyBatis3Utils.insert(this::insert, row, articleDetail, c ->
             c.map(id).toPropertyWhenPresent("id", row::getId)
             .map(articleId).toPropertyWhenPresent("articleId", row::getArticleId)
             .map(gmtCreate).toPropertyWhenPresent("gmtCreate", row::getGmtCreate)
@@ -104,35 +104,35 @@ public interface ArticleVersionMapper extends CommonCountMapper, CommonDeleteMap
         );
     }
 
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2022-04-08T22:06:54.7710141+08:00", comments="Source Table: article_version")
-    default Optional<ArticleVersion> selectOne(SelectDSLCompleter completer) {
-        return MyBatis3Utils.selectOne(this::selectOne, selectList, articleVersion, completer);
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2022-04-11T01:36:21.5288817+08:00", comments="Source Table: article_detail")
+    default Optional<ArticleDetail> selectOne(SelectDSLCompleter completer) {
+        return MyBatis3Utils.selectOne(this::selectOne, selectList, articleDetail, completer);
     }
 
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2022-04-08T22:06:54.7720206+08:00", comments="Source Table: article_version")
-    default List<ArticleVersion> select(SelectDSLCompleter completer) {
-        return MyBatis3Utils.selectList(this::selectMany, selectList, articleVersion, completer);
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2022-04-11T01:36:21.5288817+08:00", comments="Source Table: article_detail")
+    default List<ArticleDetail> select(SelectDSLCompleter completer) {
+        return MyBatis3Utils.selectList(this::selectMany, selectList, articleDetail, completer);
     }
 
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2022-04-08T22:06:54.7720206+08:00", comments="Source Table: article_version")
-    default List<ArticleVersion> selectDistinct(SelectDSLCompleter completer) {
-        return MyBatis3Utils.selectDistinct(this::selectMany, selectList, articleVersion, completer);
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2022-04-11T01:36:21.5288817+08:00", comments="Source Table: article_detail")
+    default List<ArticleDetail> selectDistinct(SelectDSLCompleter completer) {
+        return MyBatis3Utils.selectDistinct(this::selectMany, selectList, articleDetail, completer);
     }
 
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2022-04-08T22:06:54.7720206+08:00", comments="Source Table: article_version")
-    default Optional<ArticleVersion> selectByPrimaryKey(Long id_) {
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2022-04-11T01:36:21.5288817+08:00", comments="Source Table: article_detail")
+    default Optional<ArticleDetail> selectByPrimaryKey(Long id_) {
         return selectOne(c ->
             c.where(id, isEqualTo(id_))
         );
     }
 
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2022-04-08T22:06:54.7720206+08:00", comments="Source Table: article_version")
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2022-04-11T01:36:21.5298822+08:00", comments="Source Table: article_detail")
     default int update(UpdateDSLCompleter completer) {
-        return MyBatis3Utils.update(this::update, articleVersion, completer);
+        return MyBatis3Utils.update(this::update, articleDetail, completer);
     }
 
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2022-04-08T22:06:54.7720206+08:00", comments="Source Table: article_version")
-    static UpdateDSL<UpdateModel> updateAllColumns(ArticleVersion row, UpdateDSL<UpdateModel> dsl) {
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2022-04-11T01:36:21.5298822+08:00", comments="Source Table: article_detail")
+    static UpdateDSL<UpdateModel> updateAllColumns(ArticleDetail row, UpdateDSL<UpdateModel> dsl) {
         return dsl.set(id).equalTo(row::getId)
                 .set(articleId).equalTo(row::getArticleId)
                 .set(gmtCreate).equalTo(row::getGmtCreate)
@@ -141,8 +141,8 @@ public interface ArticleVersionMapper extends CommonCountMapper, CommonDeleteMap
                 .set(content).equalTo(row::getContent);
     }
 
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2022-04-08T22:06:54.7720206+08:00", comments="Source Table: article_version")
-    static UpdateDSL<UpdateModel> updateSelectiveColumns(ArticleVersion row, UpdateDSL<UpdateModel> dsl) {
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2022-04-11T01:36:21.5298822+08:00", comments="Source Table: article_detail")
+    static UpdateDSL<UpdateModel> updateSelectiveColumns(ArticleDetail row, UpdateDSL<UpdateModel> dsl) {
         return dsl.set(id).equalToWhenPresent(row::getId)
                 .set(articleId).equalToWhenPresent(row::getArticleId)
                 .set(gmtCreate).equalToWhenPresent(row::getGmtCreate)
@@ -151,8 +151,8 @@ public interface ArticleVersionMapper extends CommonCountMapper, CommonDeleteMap
                 .set(content).equalToWhenPresent(row::getContent);
     }
 
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2022-04-08T22:06:54.7720206+08:00", comments="Source Table: article_version")
-    default int updateByPrimaryKey(ArticleVersion row) {
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2022-04-11T01:36:21.5298822+08:00", comments="Source Table: article_detail")
+    default int updateByPrimaryKey(ArticleDetail row) {
         return update(c ->
             c.set(articleId).equalTo(row::getArticleId)
             .set(gmtCreate).equalTo(row::getGmtCreate)
@@ -163,8 +163,8 @@ public interface ArticleVersionMapper extends CommonCountMapper, CommonDeleteMap
         );
     }
 
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2022-04-08T22:06:54.7720206+08:00", comments="Source Table: article_version")
-    default int updateByPrimaryKeySelective(ArticleVersion row) {
+    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2022-04-11T01:36:21.5298822+08:00", comments="Source Table: article_detail")
+    default int updateByPrimaryKeySelective(ArticleDetail row) {
         return update(c ->
             c.set(articleId).equalToWhenPresent(row::getArticleId)
             .set(gmtCreate).equalToWhenPresent(row::getGmtCreate)

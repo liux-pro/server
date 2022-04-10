@@ -47,7 +47,7 @@
         <table tableName="article" >
 <!--            <domainObjectRenamingRule searchString="^Sys_" replaceString="Sys_"/>-->
         </table>
-        <table tableName="article_version" >
+        <table tableName="article_detail" >
             <!--            <domainObjectRenamingRule searchString="^Sys_" replaceString="Sys_"/>-->
         </table>
         <!-- 指定数据库表
